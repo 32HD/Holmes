@@ -1,0 +1,2393 @@
+
+####################################################################################################
+[INCIDENT]: 2026-01-29 17:20:34
+####################################################################################################
+=== COUNTER ALERT ===
+Anomaly at T=29.0s | Count=10
+
+=== TRIAGE (SFLOW) ===
+{
+  "victim_guess": "10.0.0.8",
+  "dominant_l4": "UDP",
+  "dominance_score": 0.981,
+  "proto_counts": {
+    "UDP": 2907,
+    "TCP": 57
+  },
+  "tcp_flags_stats": {
+    "source_column": "tcp_flags",
+    "total_tcp_samples": 57,
+    "syn_ratio": 0.053,
+    "ack_ratio": 0.947,
+    "rst_ratio": 0.0,
+    "fin_ratio": 0.07,
+    "psh_ratio": 0.193
+  },
+  "rows": 2964
+}
+
+=== EVIDENCE (STRUCTURED) ===
+[PCAP_SELECTED]
+/home/haodong_chen/pangu/log/timestep_pcap/27s-44s.pcap
+
+[SFLOW_TRIAGE]
+{"victim_guess": "10.0.0.8", "dominant_l4": "UDP", "dominance_score": 0.981, "proto_counts": {"UDP": 2907, "TCP": 57}, "tcp_flags_stats": {"source_column": "tcp_flags", "total_tcp_samples": 57, "syn_ratio": 0.053, "ack_ratio": 0.947, "rst_ratio": 0.0, "fin_ratio": 0.07, "psh_ratio": 0.193}, "rows": 2964}
+
+IMPORTANT: CICDDoS2019 may randomize ports; do NOT rely on port numbers for protocol identification.
+
+
+==================== UDP EVIDENCE ====================
+
+[UDP_MACRO_STATS]
+{"rows": 47868, "unique_src": 35, "top_src": "10.0.0.3", "top_src_share": 0.499, "udp_len_p50": 520.0, "udp_len_p90": 520.0, "udp_len_mean": 519.3}
+
+[UDP_TOP_SRC_IPS] (ingress to victim if known)
+[["10.0.0.3", 23894], ["10.0.0.4", 23866], ["10.0.0.8", 28], ["192.168.137.58", 13], ["192.168.137.172", 11]]
+
+[PRIMARY_UDP_LEN_CANDIDATES]
+[[520, 23908]]
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 520, "count": 23908}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 10.0.0.3 && ip.dst == 10.0.0.8 && udp.length == 520
+
+
+[UDP_SAMPLE] rank=1 src_ip=10.0.0.3 src_count=23894 sample=1 udp.length=520
+FILTER: udp && ip && ip.src == 10.0.0.3 && ip.dst == 10.0.0.8 && udp.length == 520
+PAYLOAD_STATS: {"payload_bytes": 402, "printable_ratio": 0.353, "alnum_ratio": 0.226, "entropy": 7.53, "top_ascii_snippets": ["0 \\| K 5b a.     N~  [  { %  1  vyr          0.  W         ux        SC M P  Uu   RE+ k        9        < H D   NV,   = A`o  $TB    <      M     u c  #    Z ; l  h                a   dP U$ 4  2P  s     Gy  -H! J;/ T  3  7     `   E  Z    [cc &     - h    \"8F x +  +  30r  *] G =    x\"  ;     \\    {    t8  O `        A  \"     e )e %    U   Be = AL! ~M   k  E    ^O8  L   b    Yv  QX ,| }t  n  ~ -  a&"]}
+ASCII_EXCERPT: 0 \| K 5b a. N~ [ { % 1 vyr 0. W ux SC M P Uu RE+ k 9 < H D NV, = A`o $TB < M u c # Z ; l h a dP U$ 4 2P s Gy -H! J;/ T 3 7 ` E Z [cc & - h "8F x + + 30r *] G = x" ; \ { t8 O ` A " e )e % U Be = AL! ~M k E ^O8 L b Yv QX ...
+HEX_DUMP:
+0000  12 34 00 00 00 08 12 34 00 00 00 03 08 00 45 00   .4.....4......E.
+0010  02 1c b0 8c 40 00 40 11 74 3a 0a 00 00 03 0a 00   ....@.@.t:......
+0020  00 08 31 81 00 09 02 08 ae 2f 1f 30 b5 5c 7c ca   ..1....../.0.\|.
+0030  4b 94 35 62 1a 61 2e 19 8e 8b 88 f5 4e 7e 17 c8   K.5b.a......N~..
+0040  9c b4 7b 1f 25 06 f8 31 99 fd 76 79 72 f4 9f cb   ..{.%..1..vyr...
+0050  fc a6 fc c6 0c 88 f4 30 2e bc ce 57 f0 db 1c df   .......0...W....
+0060  10 9b a4 d1 c5 75 78 e6 a1 b8 85 98 b6 e1 90 53   .....ux........S
+0070  43 fc 4d f5 50 a7 f9 55 75 10 c2 95 52 45 2b 91   C.M.P..Uu...RE+.
+0080  6b a3 96 e2 b1 83 84 b5 d1 39 f9 cb fc e8 04 fd   k........9......
+0090  e1 17 3c 08 48 1b 44 e3 81 af 4e 56 2c a1 b2 96   ..<.H.D...NV,...
+00a0  3d b9 41 60 6f e2 8b 24 54 42 a9 94 09 81 3c 0a   =.A`o..$TB....<.
+00b0  d4 d4 8f 15 20 4d dc 10 b3 ae 7f 75 d2 63 d3 16   .... M.....u.c..
+00c0  23 17 d5 f5 e2 5a a5 3b e1 6c cb c2 68 9c 1b ca   #....Z.;.l..h...
+00d0  f2 93 ed c9 f3 de 85 fd aa bb a1 0e 0e 61 89 b2   .............a..
+00e0  a9 64 50 a3 55 24 8a 34 ff c8 32 50 95 d9 73 8c   .dP.U$.4..2P..s.
+00f0  81 f0 10 fe 47 79 d6 ce 2d 48 21 13 4a 3b 2f e2   ....Gy..-H!.J;/.
+0100  54 c7 ab 33 a5 81 37 06 d8 a7 f6 da 60 cc cf 1c   T..3..7.....`...
+0110  45 ac 87 5a d5 04 94 0d 5b 63 63 dc 26 a9 ec 0e   E..Z....[cc.&...
+0120  01 2d a9 68 ae 83 e5 e2 22 38 46 e4 78 a7 2b e8   .-.h...."8F.x.+.
+0130  2b 82 e7 33 30 72 8e c2 2a 5d b9 47 10 3d 80 9a   +..30r..*].G.=..
+0140  a7 e0 78 22 fb 13 3b ac ce 18 14 0d 5c a7 e5 f0   ..x"..;.....\...
+0150  f3 7b 01 f5 d1 b1 74 38 13 dc 4f ba 60 9b 1e 05   .{....t8..O.`...
+0160  f0 7f 1c 8e b7 41 c6 ce 22 04 cf be 0e 9a 65 80   .....A..".....e.
+0170  29 65 b2 25 13 98 88 9c 55 8a cb b3 42 65 ae 3d   )e.%....U...Be.=
+0180  41 4c 21 bf 7e 4d da db e9 6b 87 e1 45 1b 0c 03   AL!.~M...k..E...
+0190  ac 5e 4f 38 93 e6 4c 18 81 c3 62 90 fc f7 f2 59   .^O8..L...b....Y
+01a0  76 c9 d3 51 58 b6 2c 7c d0 7d 74 8c bc 6e 98 f1   v..QX.,|.}t..n..
+01b0  7e 15 2d ec dc 61 26 cd
+... [TRUNCATED] ...
+
+[PRIMARY_SCAN]
+[{"sample": 1, "udp_length": 520, "anchors": []}]
+
+=== LLM RAW OUTPUT #1 ===
+<think>
+Alright, I'm trying to figure out how to analyze this Evidence Pack and come up with the correct JSON verdict. Let me break it down step by step.
+
+First, I need to determine the payload_style. Looking at the UDP_SAMPLE provided, the ASCII_EXCERPT shows a lot of random characters like "0 \| K 5b a. N~ [ { % 1 vyr 0. W ux SC M P Uu RE+ k 9 < H D NV, = A`o $TB < M u c # Z ; l h a dP U$ 4 2P s Gy -H! J;/ T 3 7 ` E Z [cc & - h "8F x + + 30r *] G = x\" ; \ { t8 O ` A \" e )e % U Be = AL! ~M k E ^O8 L b Yv QX ...". This looks like mostly gibberish with no clear structure or recognizable fields. The entropy is high, and the printable ratio is low. So, the payload_style is likely "random_noise".
+
+Next, the attack_family. Since the dominant L4 is UDP and the payload_style is "random_noise", the attack_family should be "Direct Flood". UDP floods typically involve sending a large number of UDP packets with random or meaningless data, which aligns with the payload structure here.
+
+For the attack_type, since the dominant L4 is UDP and the payload is random_noise, I can't identify a specific reflection attack. So, the attack_type is "UDP Flood".
+
+Looking at the key evidence, the ASCII_EXCERPT clearly shows the random and non-structured data, which supports the "random_noise" payload style. The HEX_DUMP also confirms the high entropy and lack of recognizable patterns.
+
+The reasoning is that the evidence points to a UDP flood attack with random payloads, so the verdict is "Malicious" as it's indicative of a DDoS attack.
+
+In terms of hypotheses, the primary guess is "UDP Flood" with high confidence. The alternative is "Unknown" but with lower confidence. The "Unknown" hypothesis is considered but less likely given the evidence.
+
+The recommended actions include blocking the source IPs, rate-limiting UDP traffic, and further analysis with the hex dump for deeper insights.
+</think>
+
+```json
+{
+  "verdict": "Malicious",
+  "attack_family": "Direct Flood",
+  "attack_type": "UDP Flood",
+  "analysis_trace": {
+    "dominant_l4_used": "UDP",
+    "victim_guess_used": "10.0.0.8",
+    "primary_samples_checked": 1,
+    "payload_style": "random_noise",
+    "hypotheses": [
+      {
+        "name": "UDP Flood",
+        "evidence_for": ["ASCII_EXCERPT shows high entropy and low printable ratio", "HEX_DUMP indicates randompayload structure"],
+        "evidence_against": ["No clear service response structure in payloads"],
+        "score": 0.9
+      },
+      {
+        "name": "Unknown",
+        "evidence_for": ["No clear protocol identifiers in payloads"],
+        "evidence_against": ["Dominant UDP traffic with high volume"],
+        "score": 0.1
+      }
+    ],
+    "decision": "Payload structure appears as random_noise with no recognizable service response elements, indicating a UDP Flood attack."
+  },
+  "key_evidence": [
+    "`0 \\| K 5b a.     N~  [  { %  1  vyr          0.  W         ux        SC M P  Uu   RE+ k        9        < H D   NV,   = A`o  $TB    <      M     u c  #    Z ; l  h                a   dP U$ 4  2P  s     Gy  -H! J;/ T  3  7     `   E  Z    [cc &     - h    \"8F x +  +  30r  *] G =    x\"  ;     \\    {    t8  O `        A  \"     e )e %    U   Be = AL! ~M   k  E    ^O8  L   b    Yv  QX ,| }t  n  ~ -  a&`"
+  ],
+  "reasoning": "The evidence shows high entropy and low printable ratio in the payload, characteristic of a UDP Flood attack.",
+  "recommended_actions": [
+    "Block traffic from the top source IPs identified",
+    "Implement rate limiting on UDP traffic",
+    "Perform deeper analysis using the provided hex dump for additional insights"
+  ],
+  "confidence": 0.9
+}
+```
+
+=== FINAL VERDICT ===
+Verdict: Malicious
+Attack Type: UDP Flood
+Key Evidence:
+- `0 \| K 5b a.     N~  [  { %  1  vyr          0.  W         ux        SC M P  Uu   RE+ k        9        < H D   NV,   = A`o  $TB    <      M     u c  #    Z ; l  h                a   dP U$ 4  2P  s     Gy  -H! J;/ T  3  7     `   E  Z    [cc &     - h    "8F x +  +  30r  *] G =    x"  ;     \    {    t8  O `        A  "     e )e %    U   Be = AL! ~M   k  E    ^O8  L   b    Yv  QX ,| }t  n  ~ -  a&`
+Reasoning: The evidence shows high entropy and low printable ratio in the payload, characteristic of a UDP Flood attack.
+====================================================================================================
+
+####################################################################################################
+[INCIDENT]: 2026-01-29 17:21:40
+####################################################################################################
+=== COUNTER ALERT ===
+Anomaly at T=213.0s | Count=2
+
+=== TRIAGE (SFLOW) ===
+{
+  "victim_guess": "10.0.0.8",
+  "dominant_l4": "TCP",
+  "dominance_score": 0.971,
+  "proto_counts": {
+    "TCP": 955,
+    "UDP": 26,
+    "2": 1,
+    "0": 1,
+    "ICMP": 1
+  },
+  "tcp_flags_stats": {
+    "source_column": "tcp_flags",
+    "total_tcp_samples": 955,
+    "syn_ratio": 0.001,
+    "ack_ratio": 0.999,
+    "rst_ratio": 0.0,
+    "fin_ratio": 0.0,
+    "psh_ratio": 0.002
+  },
+  "rows": 984
+}
+
+=== EVIDENCE (STRUCTURED) ===
+[PCAP_SELECTED]
+/home/haodong_chen/pangu/log/timestep_pcap/210s-233s.pcap
+
+[SFLOW_TRIAGE]
+{"victim_guess": "10.0.0.8", "dominant_l4": "TCP", "dominance_score": 0.971, "proto_counts": {"TCP": 955, "UDP": 26, "2": 1, "0": 1, "ICMP": 1}, "tcp_flags_stats": {"source_column": "tcp_flags", "total_tcp_samples": 955, "syn_ratio": 0.001, "ack_ratio": 0.999, "rst_ratio": 0.0, "fin_ratio": 0.0, "psh_ratio": 0.002}, "rows": 984}
+
+IMPORTANT: CICDDoS2019 may randomize ports; do NOT rely on port numbers for protocol identification.
+
+
+==================== TCP EVIDENCE ====================
+
+[TCP_FLAGS_STATS]
+{"rows": 11336, "syn_only": 245, "ack_only": 11071, "syn": 250, "ack": 11076, "rst": 33, "fin": 374, "psh": 1978, "syn_only_ratio": 0.022, "ack_only_ratio": 0.977, "syn_ratio": 0.022, "ack_ratio": 0.977}
+
+
+[TCP_SAMPLE] sample=1
+FILTER: tcp && ip && ip.dst == 10.0.0.8
+PAYLOAD_STATS: {"payload_bytes": 0, "printable_ratio": 0.0, "alnum_ratio": 0.0, "entropy": 0.0, "top_ascii_snippets": []}
+ASCII_EXCERPT: (none)
+HEX_DUMP:
+0000  12 34 00 00 00 08 00 00 00 00 00 01 08 00 45 00   .4............E.
+0010  00 34 2e 07 40 00 40 06 b8 60 c0 a8 89 ac 0a 00   .4..@.@..`......
+0020  00 08 9b 62 00 50 26 07 09 24 54 b0 7e 75 80 11   ...b.P&..$T.~u..
+0030  05 59 5d f1 00 00 01 01 08 0a 07 c5 9b a0 df c3   .Y].............
+0040  9d e8                                             ..
+
+
+
+[TCP_SAMPLE] sample=2
+FILTER: tcp && ip && ip.dst == 10.0.0.8
+PAYLOAD_STATS: {"payload_bytes": 0, "printable_ratio": 0.0, "alnum_ratio": 0.0, "entropy": 0.0, "top_ascii_snippets": []}
+ASCII_EXCERPT: (none)
+HEX_DUMP:
+0000  12 34 00 00 00 08 00 00 00 00 00 01 08 00 45 00   .4............E.
+0010  00 34 2b 47 40 00 40 06 bb a3 c0 a8 89 29 0a 00   .4+G@.@......)..
+0020  00 08 ae 4d 01 bb 2c 6c 35 95 26 a1 70 45 80 10   ...M..,l5.&.pE..
+0030  0e 42 80 07 00 00 01 01 08 0a 0f fc 1f f8 e7 fa   .B..............
+0040  d3 ba                                             ..
+
+=== LLM RAW OUTPUT #1 ===
+<think>
+Alright, I'm trying to figure out how to analyze this Evidence Pack to determine the DDoS attack details. Let's break it down step by step.
+
+First, I see that the dominant L4 protocol is TCP with a dominance score of 0.971. That means most of the traffic is TCP, so the attack_family is likely "Direct Flood" since TCP dominant usually points to that unless there's evidence of reflection, which I don't see here.
+
+Looking at the payload_style, the TCP samples have zero payload bytes and no printable or alphanumeric data. The HEX dumps show some bytes, but nothing that resembles any structured protocol like HTTP or DNS. So the payload_style is "random_noise" because it's just gibberish without any clear structure.
+
+For attack_type, since the dominant L4 is TCP and the payload is random noise, I can't assign any specific reflection type. So it must be "Unknown". Also, looking at the TCP flags, there's a very high ack_ratio and low syn_ratio, which suggests it's an ACK Flood. But wait, the ACK ratio is 0.999, which is extremely high. That makes me think it's an ACK Flood attack.
+
+Wait, but earlier I thought attack_type was "Unknown". Hmm, maybe I should reconsider. The TCP flags stats show a high number of ACKs, which is typical for an ACK Flood. So perhaps the attack_type is "ACK Flood" instead of "Unknown".
+
+But looking back, the payload is random noise, which aligns more with a Direct Flood. Since it's TCP and the flags are mostly ACK, it's likely an ACK Flood. So I'll go with "ACK Flood" as the attack_type.
+
+In the hypotheses, I need to consider alternatives. The primary hypothesis is ACK Flood because of the high ACK ratio. Another possibility is a SYN Flood, but the syn_ratio is very low, so that's less likely. The third hypothesis is "Unknown" if I can't be certain, but the evidence leans towards ACK Flood.
+
+Key evidence includes the high ACK ratio and the fact that the payload is empty or random noise. The reasoning is based on the TCP flags and the payload structure.
+
+So, putting it all together, the verdict is malicious because it's a DDoS attack. The attack_family is Direct Flood, and the attack_type is ACK Flood. The confidence is around 0.8 because the evidence is strong but not 100% certain.
+</think>
+
+```json
+{
+  "verdict": "Malicious",
+  "attack_family": "Direct Flood",
+  "attack_type": "ACK Flood",
+  "analysis_trace": {
+    "dominant_l4_used": "TCP",
+    "victim_guess_used": "10.0.0.8",
+    "primary_samples_checked": 2,
+    "payload_style": "random_noise",
+    "hypotheses": [
+      {
+        "name": "ACK Flood",
+        "evidence_for": [
+          "High ACK ratio (`ack_ratio: 0.977`)",
+          "Low SYN ratio (`syn_ratio: 0.022`)"
+        ],
+        "evidence_against": [
+          "No clear SYN flood evidence"
+        ],
+        "score": 0.8
+      },
+      {
+        "name": "SYN Flood",
+        "evidence_for": [
+          "Some SYN flags present (`syn_only_ratio: 0.022`)"
+        ],
+        "evidence_against": [
+          "Very low SYN ratio compared to ACK ratio"
+        ],
+        "score": 0.1
+      },
+      {
+        "name": "Unknown",
+        "evidence_for": [
+          "No specific protocol identifiers in payloads"
+        ],
+        "evidence_against": [
+          "Strong ACK flood evidence"
+        ],
+        "score": 0.1
+      }
+    ],
+    "decision": "The evidence shows a high ACK ratio (`ack_ratio: 0.977`) and low SYN ratio (`syn_ratio: 0.022`), indicating a likely ACK Flood."
+  },
+  "key_evidence": [
+    "High ACK ratio (`ack_ratio: 0.977`)",
+    "Low SYN ratio (`syn_ratio: 0.022`)",
+    "Empty or random noise payloads"
+  ],
+  "reasoning": "The high ACK ratio and low SYN ratio in TCP flags suggest an ACK Flood attack, with random noise payloads indicating no specific application layer protocol abuse.",
+  "recommended_actions": [
+    "Block traffic with high ACK ratios and no corresponding SYN",
+    "Implement rate limiting on ACK packets",
+    "Monitor for other TCP flood patterns"
+  ],
+  "confidence": 0.8
+}
+```
+
+=== FINAL VERDICT ===
+Verdict: Malicious
+Attack Type: ACK Flood
+Key Evidence:
+- High ACK ratio (`ack_ratio: 0.977`)
+- Low SYN ratio (`syn_ratio: 0.022`)
+- Empty or random noise payloads
+Reasoning: The high ACK ratio and low SYN ratio in TCP flags suggest an ACK Flood attack, with random noise payloads indicating no specific application layer protocol abuse.
+====================================================================================================
+
+####################################################################################################
+[INCIDENT]: 2026-01-29 17:22:39
+####################################################################################################
+=== COUNTER ALERT ===
+Anomaly at T=260.0s | Count=1
+
+=== TRIAGE (SFLOW) ===
+{
+  "victim_guess": "10.0.0.8",
+  "dominant_l4": "TCP",
+  "dominance_score": 0.992,
+  "proto_counts": {
+    "TCP": 1288,
+    "UDP": 11
+  },
+  "tcp_flags_stats": {
+    "source_column": "tcp_flags",
+    "total_tcp_samples": 1288,
+    "syn_ratio": 0.987,
+    "ack_ratio": 0.013,
+    "rst_ratio": 0.0,
+    "fin_ratio": 0.0,
+    "psh_ratio": 0.002
+  },
+  "rows": 1299
+}
+
+=== EVIDENCE (STRUCTURED) ===
+[PCAP_SELECTED]
+/home/haodong_chen/pangu/log/timestep_pcap/258s-277s.pcap
+
+[SFLOW_TRIAGE]
+{"victim_guess": "10.0.0.8", "dominant_l4": "TCP", "dominance_score": 0.992, "proto_counts": {"TCP": 1288, "UDP": 11}, "tcp_flags_stats": {"source_column": "tcp_flags", "total_tcp_samples": 1288, "syn_ratio": 0.987, "ack_ratio": 0.013, "rst_ratio": 0.0, "fin_ratio": 0.0, "psh_ratio": 0.002}, "rows": 1299}
+
+IMPORTANT: CICDDoS2019 may randomize ports; do NOT rely on port numbers for protocol identification.
+
+
+==================== TCP EVIDENCE ====================
+
+[TCP_FLAGS_STATS]
+{"rows": 49070, "syn_only": 48826, "ack_only": 244, "syn": 48826, "ack": 244, "rst": 0, "fin": 7, "psh": 25, "syn_only_ratio": 0.995, "ack_only_ratio": 0.005, "syn_ratio": 0.995, "ack_ratio": 0.005}
+
+
+[TCP_SAMPLE] sample=1
+FILTER: tcp && ip && ip.dst == 10.0.0.8
+PAYLOAD_STATS: {"payload_bytes": 381, "printable_ratio": 0.911, "alnum_ratio": 0.682, "entropy": 5.154, "top_ascii_snippets": ["HTTP/1.1 301 Moved Permanently  Server: nginx/1.18.0 (Ubuntu)   Date: Sat, 08 O ct 2022 00:12:26  & GMT  Content-Type: text/html  Content-Length: 178  Connection: xclose  Location: https://api.met.no    <html>  <head><title>301 Moved Permanently</title></head>  <body>  <center><h1>301 Moved Permanently</h1></center>  <hr><center>nginx/1.18.0 (Ubuntu)</ce nter>  </body>  </html>"]}
+ASCII_EXCERPT: HTTP/1.1 301 Moved Permanently Server: nginx/1.18.0 (Ubuntu) Date: Sat, 08 O ct 2022 00:12:26 & GMT Content-Type: text/html Content-Length: 178 Connection: xclose Location: https://api.met.no <html> <head><title>301 Move...
+HEX_DUMP:
+0000  12 34 00 00 00 08 00 00 00 00 00 01 08 00 45 00   .4............E.
+0010  01 ab 5f 33 40 00 32 06 ee 8b 9d f9 51 8d 0a 00   .._3@.2.....Q...
+0020  00 08 00 50 b9 61 c6 49 eb 71 d3 9b 65 fb 80 18   ...P.a.I.q..e...
+0030  01 fc c0 f2 00 00 01 01 08 0a e8 03 6e 8a 0f fc   ............n...
+0040  fc 35 48 54 54 50 2f 31 2e 31 20 33 30 31 20 4d   .5HTTP/1.1 301 M
+0050  6f 76 65 64 20 50 65 72 6d 61 6e 65 6e 74 6c 79   oved Permanently
+0060  0d 0a 53 65 72 76 65 72 3a 20 6e 67 69 6e 78 2f   ..Server: nginx/
+0070  31 2e 31 38 2e 30 20 28 55 62 75 6e 74 75 29 0d   1.18.0 (Ubuntu).
+0080  0a 44 61 74 65 3a 20 53 61 74 2c 20 30 38 20 4f   .Date: Sat, 08 O
+0090  63 74 20 32 30 32 32 20 30 30 3a 31 32 3a 32 36   ct 2022 00:12:26
+00a0  20 47 4d 54 0d 0a 43 6f 6e 74 65 6e 74 2d 54 79    GMT..Content-Ty
+00b0  70 65 3a 20 74 65 78 74 2f 68 74 6d 6c 0d 0a 43   pe: text/html..C
+00c0  6f 6e 74 65 6e 74 2d 4c 65 6e 67 74 68 3a 20 31   ontent-Length: 1
+00d0  37 38 0d 0a 43 6f 6e 6e 65 63 74 69 6f 6e 3a 20   78..Connection: 
+00e0  63 6c 6f 73 65 0d 0a 4c 6f 63 61 74 69 6f 6e 3a   close..Location:
+00f0  20 68 74 74 70 73 3a 2f 2f 61 70 69 2e 6d 65 74    https://api.met
+0100  2e 6e 6f 0d 0a 0d 0a 3c 68 74 6d 6c 3e 0d 0a 3c   .no....<html>..<
+0110  68 65 61 64 3e 3c 74 69 74 6c 65 3e 33 30 31 20   head><title>301 
+0120  4d 6f 76 65 64 20 50 65 72 6d 61 6e 65 6e 74 6c   Moved Permanentl
+0130  79 3c 2f 74 69 74 6c 65 3e 3c 2f 68 65 61 64 3e   y</title></head>
+0140  0d 0a 3c 62 6f 64 79 3e 0d 0a 3c 63 65 6e 74 65   ..<body>..<cente
+0150  72 3e 3c 68 31 3e 33 30 31 20 4d 6f 76 65 64 20   r><h1>301 Moved 
+0160  50 65 72 6d 61 6e 65 6e 74 6c 79 3c 2f 68 31 3e   Permanently</h1>
+0170  3c 2f 63 65 6e 74 65 72 3e 0d 0a 3c 68 72 3e 3c   </center>..<hr><
+0180  63 65 6e 74 65 72 3e 6e 67 69 6e 78 2f 31 2e 31   center>nginx/1.1
+0190  38 2e 30 20 28 55 62 75 6e 74 75 29 3c 2f 63 65   8.0 (Ubuntu)</ce
+01a0  6e 74 65 72 3e 0d 0a 3c 2f 62 6f 64 79 3e 0d 0a   nter>..</body>..
+01b0  3c 2f 68 74 6d 6c 3e 0d
+... [TRUNCATED] ...
+
+
+[TCP_SAMPLE] sample=2
+FILTER: tcp && ip && ip.dst == 10.0.0.8
+PAYLOAD_STATS: {"payload_bytes": 251, "printable_ratio": 0.124, "alnum_ratio": 0.092, "entropy": 4.725, "top_ascii_snippets": ["T s  /&+ ) f^    F G      7  z     9 8 7 6             5       3 2 1 0         E D C B     /   A                                                           O           : 8                                                         #"]}
+ASCII_EXCERPT: T s /&+ ) f^ F G 7 z 9 8 7 6 5 3 2 1 0 E D C B / A O : 8 #
+HEX_DUMP:
+0000  12 34 00 00 00 08 00 00 00 00 00 01 08 00 45 00   .4............E.
+0010  01 2f 63 57 40 00 40 06 82 98 c0 a8 89 29 0a 00   ./cW@.@......)..
+0020  00 08 b2 ef 01 bb e5 88 9f 18 eb 42 24 e6 80 18   ...........B$...
+0030  0e 42 8b bc 00 00 01 01 08 0a 0f fc fc 50 e8 03   .B...........P..
+0040  6f 24 16 03 01 00 f6 01 00 00 f2 03 01 0d 9b 89   o$..............
+0050  c2 b1 54 17 73 cc 8c 2f 26 2b 96 29 aa 66 5e 0a   ..T.s../&+.).f^.
+0060  db d9 c1 46 e1 47 c3 0a 01 f3 d4 ac 37 00 00 7a   ...F.G......7..z
+0070  c0 14 c0 0a 00 39 00 38 00 37 00 36 00 88 00 87   .....9.8.7.6....
+0080  00 86 00 85 c0 0f c0 05 00 35 00 84 c0 13 c0 09   .........5......
+0090  00 33 00 32 00 31 00 30 00 9a 00 99 00 98 00 97   .3.2.1.0........
+00a0  00 45 00 44 00 43 00 42 c0 0e c0 04 00 2f 00 96   .E.D.C.B...../..
+00b0  00 41 c0 11 c0 07 c0 0c c0 02 00 05 00 04 c0 12   .A..............
+00c0  c0 08 00 16 00 13 00 10 00 0d c0 0d c0 03 00 0a   ................
+00d0  00 15 00 12 00 0f 00 0c 00 09 00 14 00 11 00 0e   ................
+00e0  00 0b 00 08 00 06 00 03 00 ff 01 00 00 4f 00 0b   .............O..
+00f0  00 04 03 00 01 02 00 0a 00 3a 00 38 00 0e 00 0d   .........:.8....
+0100  00 19 00 1c 00 0b 00 0c 00 1b 00 18 00 09 00 0a   ................
+0110  00 1a 00 16 00 17 00 08 00 06 00 07 00 14 00 15   ................
+0120  00 04 00 05 00 12 00 13 00 01 00 02 00 03 00 0f   ................
+0130  00 10 00 11 00 23 00 00 00 0f 00 01 01            .....#.......
+
+=== LLM RAW OUTPUT #1 ===
+<think>
+Okay, so I'm trying to figure out how to analyze this Evidence Pack to determine the DDoS attack details. Let's start by going through each section step by step.
+
+First, looking at the SFLOW_TRIAGE, I see that the dominant L4 protocol is TCP with a dominance score of 0.992. That means most of the traffic is TCP. The victim is guessed to be 10.0.0.8. The TCP flags stats show a very high syn_ratio of 0.987 and a low ack_ratio of 0.005. That suggests a lot of SYN packets, which is typical for a SYN flood attack.
+
+Now, looking at the TCP samples. The first sample has a payload that looks like an HTTP 301 redirect. The ASCII excerpt shows "HTTP/1.1 301 Moved Permanently" and other headers like "Server: nginx/1.18.0 (Ubuntu)". This is clearly HTTP-like traffic. The payload style here is "http_like" because of the HTTP headers and structure.
+
+The second TCP sample's payload is much noisier. The ASCII excerpt shows random characters and the HEX dump doesn't reveal any clear structure. The printable ratio is low, and the entropy is high, which suggests it's "random_noise". However, since the first sample is HTTP-like and the dominant L4 is TCP, I need to focus on that for attack type.
+
+Considering the attack family, since the dominant L4 is TCP, it's likely a Direct Flood. The high SYN ratio points towards a SYN Flood. The payload style being "http_like" in one sample might make me think of Reflection/Amplification, but since it's TCP and the flags indicate a flood, it's more accurate to classify it as a SYN Flood under Direct Flood.
+
+So, the verdict is Malicious because it's a clear attack. The attack family is Direct Flood, and the attack type is SYN Flood due to the high number of SYN packets. The key evidence includes the HTTP-like headers and the high SYN ratio. The analysis is supported by the payload content and the TCP flags, leading to a confident decision.
+</think>
+
+```json
+{
+  "verdict": "Malicious",
+  "attack_family": "Direct Flood",
+  "attack_type": "SYN Flood",
+  "analysis_trace": {
+    "dominant_l4_used": "TCP",
+    "victim_guess_used": "10.0.0.8",
+    "primary_samples_checked": 2,
+    "payload_style": "http_like",
+    "hypotheses": [
+      {
+        "name": "SYN Flood",
+        "evidence_for": ["High SYN ratio (0.987) indicates potential SYN flood", "HTTP/1.1 301 Moved Permanently response"],
+        "evidence_against": ["Some traffic shows HTTP-like responses which are not typical for SYN floods"],
+        "score": 0.9
+      },
+      {
+        "name": "ACK Flood",
+        "evidence_for": ["ACK ratio is 0.005, which is low but could indicate ACK flood"],
+        "evidence_against": ["SYN ratio is very high, more indicative of SYN flood"],
+        "score": 0.05
+      },
+      {
+        "name": "Unknown",
+        "evidence_for": ["Mixed payload structures in samples"],
+        "evidence_against": ["Dominant SYN flags suggest a clear flood type"],
+        "score": 0.05
+      }
+    ],
+    "decision": "The evidence shows a high SYN ratio and HTTP-like traffic, indicating a SYN Flood."
+  },
+  "key_evidence": [
+    "High SYN ratio (0.987) in TCP flags",
+    "HTTP/1.1 301 Moved Permanently in payload"
+  ],
+  "reasoning": "The high SYN ratio and presence of HTTP redirects suggest a SYN Flood attack targeting the victim IP.",
+  "recommended_actions": [
+    "Block traffic with high SYN flags",
+    "Implement rate limiting on SYN packets",
+    "Verify server configurations to prevent amplification"
+  ],
+  "confidence": 0.9
+}
+```
+
+=== FINAL VERDICT ===
+Verdict: Malicious
+Attack Type: SYN Flood
+Key Evidence:
+- High SYN ratio (0.987) in TCP flags
+- HTTP/1.1 301 Moved Permanently in payload
+Reasoning: The high SYN ratio and presence of HTTP redirects suggest a SYN Flood attack targeting the victim IP.
+====================================================================================================
+
+####################################################################################################
+[INCIDENT]: 2026-01-29 17:25:47
+####################################################################################################
+=== COUNTER ALERT ===
+Anomaly at T=326.0s | Count=9
+
+=== TRIAGE (SFLOW) ===
+{
+  "victim_guess": "10.0.0.7",
+  "dominant_l4": "UDP",
+  "dominance_score": 0.979,
+  "proto_counts": {
+    "UDP": 1749,
+    "TCP": 37
+  },
+  "tcp_flags_stats": {
+    "source_column": "tcp_flags",
+    "total_tcp_samples": 37,
+    "syn_ratio": 0.054,
+    "ack_ratio": 0.973,
+    "rst_ratio": 0.0,
+    "fin_ratio": 0.108,
+    "psh_ratio": 0.243
+  },
+  "rows": 1786
+}
+
+=== EVIDENCE (STRUCTURED) ===
+[PCAP_SELECTED]
+/home/haodong_chen/pangu/log/timestep_pcap/322s-349s.pcap
+
+[SFLOW_TRIAGE]
+{"victim_guess": "10.0.0.7", "dominant_l4": "UDP", "dominance_score": 0.979, "proto_counts": {"UDP": 1749, "TCP": 37}, "tcp_flags_stats": {"source_column": "tcp_flags", "total_tcp_samples": 37, "syn_ratio": 0.054, "ack_ratio": 0.973, "rst_ratio": 0.0, "fin_ratio": 0.108, "psh_ratio": 0.243}, "rows": 1786}
+
+IMPORTANT: CICDDoS2019 may randomize ports; do NOT rely on port numbers for protocol identification.
+
+
+==================== UDP EVIDENCE ====================
+
+[UDP_MACRO_STATS]
+{"rows": 4061, "unique_src": 40, "top_src": "172.16.0.5", "top_src_share": 0.915, "udp_len_p50": 448.0, "udp_len_p90": 1365.0, "udp_len_mean": 734.7}
+
+[UDP_TOP_SRC_IPS] (ingress to victim if known)
+[["172.16.0.5", 3717], ["192.168.137.172", 129], ["192.168.137.58", 124], ["192.168.137.1", 14], ["192.168.137.154", 9]]
+
+[PRIMARY_UDP_LEN_CANDIDATES]
+[[448, 2045], [45, 78], [1365, 46]]
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 448, "count": 2045}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 448
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=3717 sample=1 udp.length=448
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 448
+PAYLOAD_STATS: {"payload_bytes": 398, "printable_ratio": 0.171, "alnum_ratio": 0.093, "entropy": 3.669, "top_ascii_snippets": ["*   H 2 % W $         4+v         j                                             a ] =        k  =                     #?h               q   q         ]8  ]8          4+p         |              Y      m   m        \"        F ! ^u]        B  w        7              ,   ,         #>x             ^ [ ^ [        }V9)         =       vl          #>o             vm  vm  bG  bG          ]"]}
+ASCII_EXCERPT: * H 2 % W $ 4+v j a ] = k = #?h q q ]8 ]8 4+p | Y m m " F ! ^u] B w 7 , , #>x ^ [ ^ [ }V9) = vl #>o vm vm bG bG ]
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  01 d4 6f fd 00 00 ee 11 a4 ff ac 10 00 05 0a 00   ..o.............
+0020  00 07 02 7a 39 15 01 c0 1a a2 d7 18 03 2a 00 06   ...z9........*..
+0030  00 48 00 32 f7 25 00 57 f1 24 00 00 00 00 00 00   .H.2.%.W.$......
+0040  00 08 c4 34 2b 76 00 00 00 00 00 00 00 01 d4 6a   ...4+v.........j
+0050  03 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+0060  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+0070  00 00 00 00 00 00 00 00 00 00 00 0f 81 61 00 5d   .............a.]
+0080  08 3d 00 00 00 00 00 00 00 06 6b aa f3 3d 00 00   .=........k..=..
+0090  00 00 00 00 00 01 a1 08 03 04 00 00 00 00 00 00   ................
+00a0  00 01 b9 23 3f 68 00 00 00 00 00 00 00 01 b2 8e   ...#?h..........
+00b0  03 02 02 7f a3 71 02 7f a3 71 00 00 00 00 00 00   .....q...q......
+00c0  00 01 00 5d 38 ad 00 5d 38 ad 00 00 00 00 00 00   ...]8..]8.......
+00d0  00 01 c4 34 2b 70 00 00 00 00 00 00 00 01 e5 7c   ...4+p.........|
+00e0  03 04 00 00 00 00 00 00 00 00 00 00 00 01 59 87   ..............Y.
+00f0  03 02 02 80 85 6d 02 80 85 6d 00 00 00 00 00 00   .....m...m......
+0100  00 01 22 e5 8b e6 00 00 00 00 00 46 82 21 00 5e   .."........F.!.^
+0110  75 5d 00 00 00 00 00 00 00 03 42 f0 ec 77 00 00   u]........B..w..
+0120  00 00 00 00 00 01 37 b9 03 04 00 00 00 00 ed a0   ......7.........
+0130  03 04 02 83 9e 2c 02 83 9e 2c 00 00 00 00 00 00   .....,...,......
+0140  00 01 b9 23 3e 78 00 00 00 00 00 00 00 01 ec 1f   ...#>x..........
+0150  03 04 00 5e ba 5b 00 5e ba 5b 00 00 00 00 00 00   ...^.[.^.[......
+0160  00 01 7d 56 39 29 00 00 00 00 00 00 00 01 cb 3d   ..}V9).........=
+0170  03 04 00 00 00 00 02 76 6c 19 00 00 00 00 00 00   .......vl.......
+0180  00 01 b9 23 3e 6f 00 00 00 00 00 00 00 01 ec 81   ...#>o..........
+0190  03 04 02 76 6d 1f 02 76 6d 1f 00 62 47 1c 00 62   ...vm..vm..bG..b
+01a0  47 1c 00 00 00 00 00 00 00 01 8e 5d 80 e4 00 00   G..........]....
+01b0  00 00 00 00 00 01 bc d2
+... [TRUNCATED] ...
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 45, "count": 78}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 45
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=3717 sample=2 udp.length=45
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 45
+PAYLOAD_STATS: {"payload_bytes": 37, "printable_ratio": 0.243, "alnum_ratio": 0.189, "entropy": 3.052, "top_ascii_snippets": [";            aids gov       )"]}
+ASCII_EXCERPT: ; aids gov )
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  00 41 d9 eb 40 00 31 11 b9 a4 ac 10 00 05 0a 00   .A..@.1.........
+0020  00 07 02 34 e5 c6 00 2d b9 d1 3b e0 83 80 00 01   ...4...-..;.....
+0030  00 00 00 00 00 01 04 61 69 64 73 03 67 6f 76 00   .......aids.gov.
+0040  00 ff 00 01 00 00 29 10 00 00 00 00 00 00 00      ......)........
+
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 1365, "count": 46}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 1365
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=3717 sample=3 udp.length=1365
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 1365
+PAYLOAD_STATS: {"payload_bytes": 398, "printable_ratio": 0.497, "alnum_ratio": 0.44, "entropy": 6.348, "top_ascii_snippets": ["aids gov                 \" !                smtp2 ees hhs                 smtp >             v=spf1 a mx ptr -all           YXCQbZbB+PFehojps3sEMONSJFFz7L9jFnNY8fDKyY42haMX8gBd5LIcjd2YDooyu/weXTyLu7q8L8TZdNiLSiZA==             MS=ms82199542   c         v=spf1 a mx ptr -all   0                 * 9 v= w   0 E 6   p,            |VG   ^   4  ou   v 2  Y*             D  860 z  2 f5 D Q$"]}
+ASCII_EXCERPT: aids gov " ! smtp2 ees hhs smtp > v=spf1 a mx ptr -all YXCQbZbB+PFehojps3sEMONSJFFz7L9jFnNY8fDKyY42haMX8gBd5LIcjd2YDooyu/weXTyLu7q8L8TZdNiLSiZA== MS=ms82199542 c v=spf1 a mx ptr -all 0 * 9 v= w 0 E 6 p, |VG ^ 4 ou v 2 Y*...
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  05 69 00 00 40 00 32 11 8d 68 ac 10 00 05 0a 00   .i..@.2..h......
+0020  00 07 02 34 7f c4 05 55 3d 3c ee ca 81 80 00 01   ...4...U=<......
+0030  00 10 00 04 00 01 04 61 69 64 73 03 67 6f 76 00   .......aids.gov.
+0040  00 ff 00 01 c0 0c 00 01 00 01 00 00 03 0b 00 04   ................
+0050  22 e2 21 c9 c0 0c 00 0f 00 01 00 00 03 0b 00 12   ".!.............
+0060  00 0a 05 73 6d 74 70 32 03 65 65 73 03 68 68 73   ...smtp2.ees.hhs
+0070  c0 11 c0 0c 00 0f 00 01 00 00 03 0b 00 09 00 14   ................
+0080  04 73 6d 74 70 c0 3e c0 0c 00 10 00 01 00 00 03   .smtp.>.........
+0090  0b 00 15 14 76 3d 73 70 66 31 20 61 20 6d 78 20   ....v=spf1 a mx 
+00a0  70 74 72 20 2d 61 6c 6c c0 0c 00 10 00 01 00 00   ptr -all........
+00b0  03 0b 00 59 58 43 51 62 5a 62 42 2b 50 46 65 68   ...YXCQbZbB+PFeh
+00c0  6f 6a 70 73 33 73 45 4d 4f 4e 53 4a 46 46 7a 37   ojps3sEMONSJFFz7
+00d0  4c 39 6a 46 6e 4e 59 38 66 44 4b 79 59 34 32 68   L9jFnNY8fDKyY42h
+00e0  61 4d 58 38 67 42 64 35 4c 49 63 6a 64 32 59 44   aMX8gBd5LIcjd2YD
+00f0  6f 6f 79 75 2f 77 65 58 54 79 4c 75 37 71 38 4c   ooyu/weXTyLu7q8L
+0100  38 54 5a 64 4e 69 4c 53 69 5a 41 3d 3d c0 0c 00   8TZdNiLSiZA==...
+0110  10 00 01 00 00 03 0b 00 0e 0d 4d 53 3d 6d 73 38   ..........MS=ms8
+0120  32 31 39 39 35 34 32 c0 0c 00 63 00 01 00 00 03   2199542...c.....
+0130  0b 00 15 06 76 3d 73 70 66 31 01 61 02 6d 78 03   ....v=spf1.a.mx.
+0140  70 74 72 04 2d 61 6c 6c c0 0c 00 30 00 01 00 00   ptr.-all...0....
+0150  03 0b 01 08 01 01 03 08 03 01 00 01 a9 2a c4 39   .............*.9
+0160  a4 76 3d fd 77 8f e7 8b 30 bf 45 cb 36 b8 d6 7f   .v=.w...0.E.6...
+0170  70 2c 93 bd 10 ce 91 ad bb 97 90 f8 09 88 7c 56   p,............|V
+0180  47 f6 a5 0d 5e ea f2 9b 34 93 ba 6f 75 94 c8 82   G...^...4..ou...
+0190  76 9e 32 ec fd 59 2a 00 a3 a3 85 dd 8f 03 8f c7   v.2..Y*.........
+01a0  e5 07 ca fa 44 80 ff 38 36 30 fa 7a c1 81 32 99   ....D..860.z..2.
+01b0  66 35 81 44 e9 51 24 f2
+... [TRUNCATED] ...
+
+[PRIMARY_SCAN]
+[{"sample": 1, "udp_length": 448, "anchors": []}, {"sample": 2, "udp_length": 45, "anchors": []}, {"sample": 3, "udp_length": 1365, "anchors": ["PFehojps3sEMONSJFFz7L9jFnNY8fDKyY42haMX8gBd5LIcjd2YDooyu", "weXTyLu7q8L8TZdNiLSiZA", "ms82199542", "YXCQbZbB"]}]
+
+[PRIMARY_ANCHORS]
+["PFehojps3sEMONSJFFz7L9jFnNY8fDKyY42haMX8gBd5LIcjd2YDooyu", "weXTyLu7q8L8TZdNiLSiZA", "ms82199542", "YXCQbZbB"]
+
+=== LLM RAW OUTPUT #1 ===
+<think>
+Alright, I'm trying to figure out how to analyze this DDoS evidence pack. Let's start by understanding the structure and the guidelines provided. The evidence pack includes sFlow and tshark samples, and my job is to determine the payload style, attack family, and attack type based on the given data.
+
+First, I need to determine the payload_style. Looking at the UDP samples, I see that the ASCII excerpts and HEX dumps are provided. For the first sample with udp.length=448, the ASCII excerpt shows characters like "*", "H", "2", "%", "W", "$", "4+v", "j", "a", etc. The printable ratio is 0.171, which is low, and the entropy is 3.669. This suggests that the payload is not very structured and has high entropy, which might indicate random noise.
+
+The second sample has a shorter length of 45 bytes and the ASCII excerpt is "; aids gov )". The printable ratio here is 0.243, still low. The HEX dump shows some readable strings like "aids.gov" but it's mixed with other non-printable characters.
+
+The third sample has a longer length of 1365 bytes. The ASCII excerpt includes "aids gov", "smtp2 ees hhs", "smtp >", and some SPF (Sender Policy Framework) related strings. The printable ratio is higher at 0.497, and the entropy is 6.348. This sample seems more structured, with parts that look like SMTP headers and SPF records. However, the payload also includes random-looking strings and hexadecimal characters, which complicates the classification.
+
+Given these observations, the payloads don't consistently fit into categories like "http_like", "asn1_oid_like", or "kv_semicolon_list". The presence of some readable strings like "aids.gov" and SMTP-related terms could suggest a possible reflection attack, but the overall structure is mixed and unclear. Therefore, the payload_style is best categorized as "mixed_or_unclear".
+
+Next, determining the attack_family. Since the dominant L4 protocol is UDP (as indicated by SFLOW_TRIAGE with 1749 UDP packets vs 37 TCP), and the payload_style is "mixed_or_unclear", the attack_family is likely "Unknown" because we can't clearly identify a specific reflection or amplification pattern.
+
+For attack_type, since the dominant L4 is UDP, we can't consider TCP-based attacks like SYN Flood or ACK Flood. The payload doesn't clearly point to a specific reflection type like DNS or SNMP. Although there are some SMTP and SPF strings, they aren't conclusive enough to label it as a specific reflection attack. Therefore, the attack_type remains "Unknown".
+
+The key evidence includes the printable ratios, entropy values, and specific ASCII excerpts that show a mix of readable and random data. The hypotheses consider possible reflection attacks but conclude that the evidence isn't sufficient to pinpoint the exact type, leading to an "Unknown" classification.
+
+The recommended actions include blocking the source IPs, monitoring for UDP traffic spikes, and deploying generic DDoS protection measures, as the exact attack type isn't clear but the traffic is deemed malicious based on the anomaly and payload analysis.
+</think>
+
+```json
+{
+  "verdict": "Malicious",
+  "attack_family": "Unknown",
+  "attack_type": "Unknown",
+  "analysis_trace": {
+    "dominant_l4_used": "UDP",
+    "victim_guess_used": "10.0.0.7",
+    "primary_samples_checked": 3,
+    "payload_style": "mixed_or_unclear",
+    "hypotheses": [
+      {
+        "name": "Unknown",
+        "evidence_for": [
+          "Payload structure is mixed and unclear, with some readable fragments but no clear protocol identifier",
+          "Printable ratio varies across samples (0.171 to 0.497), making it hard to classify",
+          "Entropy values (3.669 to 6.348) suggest mixed content types"
+        ],
+        "evidence_against": [
+          "No clear protocol-specific anchors found in the payloads",
+          "No consistent structure across different packet lengths (448, 45, 1365 bytes)",
+          "Cannot confirm any specific reflection protocol"
+        ],
+        "score": 0.8
+      },
+      {
+        "name": "SMTP Reflection",
+        "evidence_for": [
+          "Presence of `smtp2 ees hhs` and `smtp >` in ASCII excerpt",
+          "SPF-related strings like `v=spf1 a mx ptr -all`"
+        ],
+        "evidence_against": [
+          "Inconsistent payload structure across samples",
+          "Most content appears random or encrypted",
+          "Insufficient clear SMTP-specific commands"
+        ],
+        "score": 0.2
+      },
+      {
+        "name": "Other Reflection",
+        "evidence_for": [
+          "Some readable strings like `aids gov` and `
+
+=== LLM RAW OUTPUT #2 ===
+<think>
+Okay, I need to analyze this Evidence Pack to determine the correct JSON verdict. Let's start by breaking down the information provided.
+
+First, the SFLOW_TRIAGE shows that the dominant L4 is UDP with a dominance score of 0.979. This means the attack is primarily using UDP. The victim is guessed as 10.0.0.7.
+
+Looking at the UDP evidence, the top source IP is 172.16.0.5, which is responsible for 91.5% of the traffic. The UDP lengths are 448, 45, and 1365 bytes. The primary sample with length 448 has a payload that's mostly non-printable, with low printable and alphanumeric ratios. The ASCII excerpt shows some text like "aids gov" and "smtp," but it's fragmented and mixed with other characters. The entropy is moderate, which suggests some structure but not clear text.
+
+The second sample with length 45 also shows "aids gov)" in ASCII, which might indicate some pattern, but it's not enough to identify a specific protocol. The third sample with length 1365 has higher printable and alphanumeric ratios, including strings like "v=spf1 a mx ptr -all" and "MS=ms82199542." These look like parts of an SPF (Sender Policy Framework) record, which is used in email SPF checks. SPF records are typically used in the context of SMTP, and they can be part of reflection attacks where an attacker sends forged requests to a mail server, causing it to send large responses back.
+
+The PRIMARY_ANCHORS include "ms82199542" and "YXCQbZbB," which might be parts of the payload but don't directly point to a known protocol. However, the presence of SPF-related strings suggests that the payload could be mimicking SMTP or DNS responses used in reflection attacks.
+
+Since the payload_style is mostly random_noise with some fragments, but the presence of SPF strings could indicate a specific type of reflection. However, without clear identifiers like HTTP headers or specific protocol markers, it's challenging to pinpoint the exact attack type. The entropy and payload structure don't clearly align with common reflection types like DNS or SNMP. The mixed nature of the payloads makes it hard to classify, so "Unknown" is the safest choice for attack_type.
+
+The attack_family is Reflection/Amplification because it's UDP, and the payloads might be attempting to reflect, even if the specific type is unclear.
+
+Putting it all together, the verdict is Malicious because it's a DDoS attack. The attack_family is Reflection/Amplification, and the attack_type remains Unknown due to insufficient clear evidence pointing to a specific protocol. The key evidence includes the "aids gov" string and the SPF-related content, which are parts of the payload.
+</think>
+
+```json
+{
+  "verdict": "Malicious",
+  "attack_family": "Reflection/Amplification",
+  "attack_type": "Unknown",
+  "analysis_trace": {
+    "dominant_l4_used": "UDP",
+    "victim_guess_used": "10.0.0.7",
+    "primary_samples_checked": 3,
+    "payload_style": "random_noise",
+    "hypotheses": [
+      {
+        "name": "Unknown",
+        "evidence_for": [
+          "Payload structure is mostly random with low printable ratio (`printable_ratio: 0.171`)",
+          "No clear protocol identifiers in ASCII excerpts or HEX dumps"
+        ],
+        "evidence_against": [
+          "Some fragments like `aids gov` and `smtp` could suggest possible patterns",
+          "Presence of `v=spf1` in payloads which might indicate reflection attempts"
+        ],
+        "score": 0.8
+      },
+      {
+        "name": "SMTP Reflection",
+        "evidence_for": [
+          "ASCII excerpt contains `smtp` and `aids gov` which might relate to email protocols",
+          "Presence of `v=spf1` in payloads which could indicate email-related reflection"
+        ],
+        "evidence_against": [
+          "Overall payload structure is too noisy and lacks clear SMTP headers",
+          "No clear evidence of SMTP command sequences"
+        ],
+        "score": 0.2
+      },
+      {
+        "name": "DNS Reflection",
+        "evidence_for": [
+          "Presence of `v=spf1` in payloads which could relate to DNS records",
+          "Some payload fragments might indicate DNS-like structures"
+        ],
+        "evidence_against": [
+          "No clear DNS query/response patterns in HEX dumps",
+          "Payload structure does not resemble DNS message formats"
+        ],
+        "score": 0.0
+      }
+    ],
+    "decision": "The payload structure is primarily random noise with some fragments that could suggest reflection attempts, but no clear protocol identifiers are present. The presence of `v=spf1` and `
+
+=== LLM RAW OUTPUT #3 ===
+<think>
+Alright, I need to determine the verdict for this DDoS incident based on the provided Evidence Pack. Let me go through the steps as outlined.
+
+First, I look at the payload_style. The Evidence Pack includes several UDP samples with ASCII excerpts and HEX dumps. The first sample has an ASCII excerpt with "* H 2 % W $ 4+v j a ] = k = #?h q q ]8 ]8 4+p | Y m m \" F ! ^u] B w 7 , , #>x ^ [ ^ [ }V9) = vl #>o vm vm bG bG ]" which doesn't seem to follow a clear structure. The printable ratio is low, and the entropy is moderate. The second sample has "; aids gov )" which is short and not structured. The third sample has a longer excerpt with "aids gov" and some SPF1-related strings, but it's mixed with random characters. The HEX dumps show variable lengths and no clear protocol markers. Since the payloads don't fit into http_like, asn1_oid_like, kv_semicolon_list, or text_banner_like, I'll classify payload_style as "random_noise".
+
+Next, attack_family. The dominant L4 is UDP (97.9% dominance), and the payload_style is random_noise. According to the rules, this suggests a "Direct Flood", likely a UDP Flood.
+
+For attack_type, since the dominant L4 is UDP and payload_style is random_noise, I can't assign a specific reflection type. Therefore, attack_type is "UDP Flood".
+
+Looking at the hypotheses, the primary hypothesis is UDP Flood with evidence from the payload structure and the high entropy. Alternative could be "Unknown" if the structure isn't clear, but the evidence supports UDP Flood more.
+
+The key evidence includes the printable ratios, entropy values, and specific substrings from the payloads. The reasoning ties the random noise and high UDP dominance to a UDP Flood.
+
+Finally, recommended actions include blocking the source IPs, rate-limiting, and using a scrubbing center. Confidence is set to 0.8 based on the clear evidence.
+</think>
+
+```json
+{
+  "verdict": "Malicious",
+  "attack_family": "Direct Flood",
+  "attack_type": "UDP Flood",
+  "analysis_trace": {
+    "dominant_l4_used": "UDP",
+    "victim_guess_used": "10.0.0.7",
+    "primary_samples_checked": 3,
+    "payload_style": "random_noise",
+    "hypotheses": [
+      {
+        "name": "UDP Flood",
+        "evidence_for": ["`printable_ratio`: 0.171", "`entropy`: 3.669", "`top_ascii_snippets` show random characters"],
+        "evidence_against": ["No clear protocol structure"],
+        "score": 0.8
+      },
+      {
+        "name": "Unknown",
+        "evidence_for": ["No clear protocol structure"],
+        "evidence_against": ["`printable_ratio` and `entropy` suggest some structure"],
+        "score": 0.2
+      }
+    ],
+    "decision": "The payload structure shows high entropy and low printable ratio, consistent with `random_noise`, indicating a UDP Flood."
+  },
+  "key_evidence": [
+    "`printable_ratio`: 0.171",
+    "`entropy`: 3.669",
+    "`top_ascii_snippets` show random characters"
+  ],
+  "reasoning": "The evidence shows high entropy and random payload structure, typical of a UDP Flood attack.",
+  "recommended_actions": [
+    "Block traffic from the top source IP 172.16.0.5",
+    "Implement rate-limiting on UDP traffic",
+    "Activate DDoS scrubbing centers"
+  ],
+  "confidence": 0.8
+}
+```
+
+=== FINAL VERDICT ===
+Verdict: Malicious
+Attack Type: UDP Flood
+Key Evidence:
+- `printable_ratio`: 0.171
+- `entropy`: 3.669
+- `top_ascii_snippets` show random characters
+Reasoning: The evidence shows high entropy and random payload structure, typical of a UDP Flood attack.
+====================================================================================================
+
+####################################################################################################
+[INCIDENT]: 2026-01-29 17:26:56
+####################################################################################################
+=== COUNTER ALERT ===
+Anomaly at T=486.0s | Count=2
+
+=== TRIAGE (SFLOW) ===
+{
+  "victim_guess": "10.0.0.7",
+  "dominant_l4": "UDP",
+  "dominance_score": 0.881,
+  "proto_counts": {
+    "UDP": 185,
+    "TCP": 25
+  },
+  "tcp_flags_stats": {
+    "source_column": "tcp_flags",
+    "total_tcp_samples": 25,
+    "syn_ratio": 0.0,
+    "ack_ratio": 1.0,
+    "rst_ratio": 0.0,
+    "fin_ratio": 0.0,
+    "psh_ratio": 0.2
+  },
+  "rows": 210
+}
+
+=== EVIDENCE (STRUCTURED) ===
+[PCAP_SELECTED]
+/home/haodong_chen/pangu/log/timestep_pcap/485s-554s.pcap
+
+[SFLOW_TRIAGE]
+{"victim_guess": "10.0.0.7", "dominant_l4": "UDP", "dominance_score": 0.881, "proto_counts": {"UDP": 185, "TCP": 25}, "tcp_flags_stats": {"source_column": "tcp_flags", "total_tcp_samples": 25, "syn_ratio": 0.0, "ack_ratio": 1.0, "rst_ratio": 0.0, "fin_ratio": 0.0, "psh_ratio": 0.2}, "rows": 210}
+
+IMPORTANT: CICDDoS2019 may randomize ports; do NOT rely on port numbers for protocol identification.
+
+
+==================== UDP EVIDENCE ====================
+
+[UDP_MACRO_STATS]
+{"rows": 42330, "unique_src": 69, "top_src": "172.16.0.5", "top_src_share": 0.97, "udp_len_p50": 237.0, "udp_len_p90": 237.0, "udp_len_mean": 233.28}
+
+[UDP_TOP_SRC_IPS] (ingress to victim if known)
+[["172.16.0.5", 41071], ["192.168.137.172", 165], ["192.168.137.58", 150], ["192.168.137.1", 104], ["192.168.137.154", 71]]
+
+[PRIMARY_UDP_LEN_CANDIDATES]
+[[237, 34239], [219, 3522], [255, 2040]]
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 237, "count": 34239}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 237
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=41071 sample=1 udp.length=237
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 237
+PAYLOAD_STATS: {"payload_bytes": 229, "printable_ratio": 0.598, "alnum_ratio": 0.384, "entropy": 3.546, "top_ascii_snippets": ["CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  !         BTSNDRC           BTSNDRC           BTSNDRC             __MSBROWSE__    WORKGROUP         WORKGROUP         WORKGROUP"]}
+ASCII_EXCERPT: CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ! BTSNDRC BTSNDRC BTSNDRC __MSBROWSE__ WORKGROUP WORKGROUP WORKGROUP
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  01 01 ca 8c 40 00 34 11 c5 43 ac 10 00 05 0a 00   ....@.4..C......
+0020  00 07 03 e1 e3 19 00 ed 02 3f e7 9c 84 00 00 00   .........?......
+0030  00 01 00 00 00 00 20 43 4b 41 41 41 41 41 41 41   ...... CKAAAAAAA
+0040  41 41 41 41 41 41 41 41 41 41 41 41 41 41 41 41   AAAAAAAAAAAAAAAA
+0050  41 41 41 41 41 41 41 00 00 21 00 01 00 00 00 00   AAAAAAA..!......
+0060  00 ad 07 42 54 53 4e 44 52 43 20 20 20 20 20 20   ...BTSNDRC      
+0070  20 20 00 04 00 42 54 53 4e 44 52 43 20 20 20 20     ...BTSNDRC    
+0080  20 20 20 20 03 04 00 42 54 53 4e 44 52 43 20 20       ...BTSNDRC  
+0090  20 20 20 20 20 20 20 04 00 01 02 5f 5f 4d 53 42          ....__MSB
+00a0  52 4f 57 53 45 5f 5f 02 01 84 00 57 4f 52 4b 47   ROWSE__....WORKG
+00b0  52 4f 55 50 20 20 20 20 20 20 00 84 00 57 4f 52   ROUP      ...WOR
+00c0  4b 47 52 4f 55 50 20 20 20 20 20 20 1d 04 00 57   KGROUP      ...W
+00d0  4f 52 4b 47 52 4f 55 50 20 20 20 20 20 20 1e 84   ORKGROUP      ..
+00e0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+00f0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+0100  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00      ...............
+
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 219, "count": 3522}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 219
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=41071 sample=2 udp.length=219
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 219
+PAYLOAD_STATS: {"payload_bytes": 212, "printable_ratio": 0.59, "alnum_ratio": 0.392, "entropy": 3.655, "top_ascii_snippets": ["CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  !         KIFISIA           KIFISIA           WORKGROUP         WORKGROUP         WORKGROUP           __MSBROWSE__     )  b1"]}
+ASCII_EXCERPT: CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ! KIFISIA KIFISIA WORKGROUP WORKGROUP WORKGROUP __MSBROWSE__ ) b1
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  00 ef 1f 54 00 00 70 11 74 8e ac 10 00 05 0a 00   ...T..p.t.......
+0020  00 07 03 e2 b8 d7 00 db 06 76 d3 cb 84 00 00 00   .........v......
+0030  00 01 00 00 00 00 20 43 4b 41 41 41 41 41 41 41   ...... CKAAAAAAA
+0040  41 41 41 41 41 41 41 41 41 41 41 41 41 41 41 41   AAAAAAAAAAAAAAAA
+0050  41 41 41 41 41 41 41 00 00 21 00 01 00 00 00 00   AAAAAAA..!......
+0060  00 9b 06 4b 49 46 49 53 49 41 20 20 20 20 20 20   ...KIFISIA      
+0070  20 20 20 04 00 4b 49 46 49 53 49 41 20 20 20 20      ..KIFISIA    
+0080  20 20 20 20 00 04 00 57 4f 52 4b 47 52 4f 55 50       ...WORKGROUP
+0090  20 20 20 20 20 20 00 84 00 57 4f 52 4b 47 52 4f         ...WORKGRO
+00a0  55 50 20 20 20 20 20 20 1e 84 00 57 4f 52 4b 47   UP      ...WORKG
+00b0  52 4f 55 50 20 20 20 20 20 20 1d 04 00 01 02 5f   ROUP      ....._
+00c0  5f 4d 53 42 52 4f 57 53 45 5f 5f 02 01 84 00 98   _MSBROWSE__.....
+00d0  29 a6 8a 62 31 00 00 00 00 00 00 00 00 00 00 00   )..b1...........
+00e0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+00f0  00 00 00 00 00 00 00 00 00 00 00 00 00            .............
+
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 255, "count": 2040}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 255
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=41071 sample=3 udp.length=255
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 255
+PAYLOAD_STATS: {"payload_bytes": 247, "printable_ratio": 0.64, "alnum_ratio": 0.393, "entropy": 3.518, "top_ascii_snippets": ["W            CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  !         ML110           d ML110           d ML110           d   __MSBROWSE__    WORKGROUP       d WORKGROUP       d WORKGROUP         WORKGROUP"]}
+ASCII_EXCERPT: W CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ! ML110 d ML110 d ML110 d __MSBROWSE__ WORKGROUP d WORKGROUP d WORKGROUP WORKGROUP
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  01 13 00 00 40 00 30 11 93 be ac 10 00 05 0a 00   ....@.0.........
+0020  00 07 03 e7 a9 37 00 ff 0f ea 57 8e 84 00 00 00   .....7....W.....
+0030  00 01 00 00 00 00 20 43 4b 41 41 41 41 41 41 41   ...... CKAAAAAAA
+0040  41 41 41 41 41 41 41 41 41 41 41 41 41 41 41 41   AAAAAAAAAAAAAAAA
+0050  41 41 41 41 41 41 41 00 00 21 00 01 00 00 00 00   AAAAAAA..!......
+0060  00 bf 08 4d 4c 31 31 30 20 20 20 20 20 20 20 20   ...ML110        
+0070  20 20 00 64 00 4d 4c 31 31 30 20 20 20 20 20 20     .d.ML110      
+0080  20 20 20 20 03 64 00 4d 4c 31 31 30 20 20 20 20       .d.ML110    
+0090  20 20 20 20 20 20 20 64 00 01 02 5f 5f 4d 53 42          d...__MSB
+00a0  52 4f 57 53 45 5f 5f 02 01 e4 00 57 4f 52 4b 47   ROWSE__....WORKG
+00b0  52 4f 55 50 20 20 20 20 20 20 1d 64 00 57 4f 52   ROUP      .d.WOR
+00c0  4b 47 52 4f 55 50 20 20 20 20 20 20 1b 64 00 57   KGROUP      .d.W
+00d0  4f 52 4b 47 52 4f 55 50 20 20 20 20 20 20 1e e4   ORKGROUP      ..
+00e0  00 57 4f 52 4b 47 52 4f 55 50 20 20 20 20 20 20   .WORKGROUP      
+00f0  00 e4 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+0100  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+0110  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+0120  00                                                .
+
+
+[PRIMARY_SCAN]
+[{"sample": 1, "udp_length": 237, "anchors": ["CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "__MSBROWSE__", "WORKGROUP", "BTSNDRC"]}, {"sample": 2, "udp_length": 219, "anchors": ["CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "__MSBROWSE__", "WORKGROUP", "KIFISIA"]}, {"sample": 3, "udp_length": 255, "anchors": ["CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "__MSBROWSE__", "WORKGROUP", "ML110"]}]
+
+[PRIMARY_ANCHORS]
+["CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "__MSBROWSE__", "WORKGROUP", "BTSNDRC", "KIFISIA", "ML110"]
+
+=== LLM RAW OUTPUT #1 ===
+<think>
+Okay, so I'm trying to analyze this Evidence Pack to determine the type of DDoS attack. Let's go through this step by step.
+
+First, I need to figure out the payload_style. Looking at the UDP samples, I see ASCII excerpts with repeating "CKAAAAAAAA..." which looks like padding. Then there are strings like "__MSBROWSE__", "WORKGROUP", "BTSNDRC", "KIFISIA", and "ML110". These seem like they're part of a structured response, possibly from a service. The presence of "__MSBROWSE__" and "WORKGROUP" makes me think of NetBIOS or SMB traffic. The payload isn't random noise; it has clear, repeating structures, so I don't think it's "random_noise". It's more like "text_banner_like" because it's readable text but not HTTP-like.
+
+Next, determining the attack_family. Since the dominant L4 is UDP, and the payload_style is "text_banner_like", which suggests it's a reflection/amplification attack. The data looks like it's part of a service response, so attack_family is "Reflection/Amplification".
+
+Now for attack_type. The payload includes "__MSBROWSE__" and "WORKGROUP", which are associated with NetBIOS. So this points to a "NetBIOS Reflection" attack. The other options like "SNMP Reflection" or "DNS Reflection" don't fit because the strings don't match those protocols.
+
+The verdict is "Malicious" because it's clearly an attack. The key evidence includes the repeating "CKA..." and the specific strings that match NetBIOS responses. The hypotheses are set with NetBIOS as primary, others as alternatives, and a fallback to Unknown if needed.
+
+I also considered the TCP flags, but since it's UDP dominant, those aren't relevant here. The recommended actions include mitigating UDP traffic and filtering specific sources, which makes sense for a reflection attack.
+
+So putting it all together, the attack is a NetBIOS Reflection with UDP being the main protocol used.
+</think>
+
+```json
+{
+  "verdict": "Malicious",
+  "attack_family": "Reflection/Amplification",
+  "attack_type": "NetBIOS Reflection",
+  "analysis_trace": {
+    "dominant_l4_used": "UDP",
+    "victim_guess_used": "10.0.0.7",
+    "primary_samples_checked": 3,
+    "payload_style": "text_banner_like",
+    "hypotheses": [
+      {
+        "name": "NetBIOS Reflection",
+        "evidence_for": [
+          "ASCII_EXCERPT contains `__MSBROWSE__` and `WORKGROUP`",
+          "Hex dump shows structured data with `BTSNDRC` and `KIFISIA`"
+        ],
+        "evidence_against": [
+          "No clear HTTP-like or SNMP-specific markers"
+        ],
+        "score": 0.9
+      },
+      {
+        "name": "Unknown",
+        "evidence_for": [
+          "Multiple different strings (`BTSNDRC`, `KIFISIA`, `ML110`) in payloads"
+        ],
+        "evidence_against": [
+          "Presence of `__MSBROWSE__` and `WORKGROUP` strongly suggests NetBIOS"
+        ],
+        "score": 0.1
+      }
+    ],
+    "decision": "The payloads contain `__MSBROWSE__` and `WORKGROUP`, which are strong indicators of NetBIOS Reflection."
+  },
+  "key_evidence": [
+    "ASCII_EXCERPT: `CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  !         BTSNDRC`",
+    "Hex dump includes `__MSBROWSE__` and `WORKGROUP`",
+    "Multiple payloads contain similar structured patterns"
+  ],
+  "reasoning": "The repeating patterns and specific NetBIOS-related strings indicate a reflection attack targeting NetBIOS services.",
+  "recommended_actions": [
+    "Block UDP traffic from sources in [UDP_TOP_SRC_IPS]",
+    "Implement specific filtering for NetBIOS-related traffic",
+    "Verify and secure NetBIOS services on the network",
+    "Monitor for similar patterns in UDP traffic"
+  ],
+  "confidence": 0.9
+}
+```
+
+=== FINAL VERDICT ===
+Verdict: Malicious
+Attack Type: NetBIOS Reflection
+Key Evidence:
+- ASCII_EXCERPT: `CKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  !         BTSNDRC`
+- Hex dump includes `__MSBROWSE__` and `WORKGROUP`
+- Multiple payloads contain similar structured patterns
+Reasoning: The repeating patterns and specific NetBIOS-related strings indicate a reflection attack targeting NetBIOS services.
+====================================================================================================
+
+####################################################################################################
+[INCIDENT]: 2026-01-29 17:29:09
+####################################################################################################
+=== COUNTER ALERT ===
+Anomaly at T=577.0s | Count=2
+
+=== TRIAGE (SFLOW) ===
+{
+  "victim_guess": "10.0.0.7",
+  "dominant_l4": "UDP",
+  "dominance_score": 0.952,
+  "proto_counts": {
+    "UDP": 159,
+    "TCP": 8
+  },
+  "tcp_flags_stats": {
+    "source_column": "tcp_flags",
+    "total_tcp_samples": 8,
+    "syn_ratio": 0.0,
+    "ack_ratio": 1.0,
+    "rst_ratio": 0.0,
+    "fin_ratio": 0.0,
+    "psh_ratio": 0.0
+  },
+  "rows": 167
+}
+
+=== EVIDENCE (STRUCTURED) ===
+[PCAP_SELECTED]
+/home/haodong_chen/pangu/log/timestep_pcap/577s-609s.pcap
+
+[SFLOW_TRIAGE]
+{"victim_guess": "10.0.0.7", "dominant_l4": "UDP", "dominance_score": 0.952, "proto_counts": {"UDP": 159, "TCP": 8}, "tcp_flags_stats": {"source_column": "tcp_flags", "total_tcp_samples": 8, "syn_ratio": 0.0, "ack_ratio": 1.0, "rst_ratio": 0.0, "fin_ratio": 0.0, "psh_ratio": 0.0}, "rows": 167}
+
+IMPORTANT: CICDDoS2019 may randomize ports; do NOT rely on port numbers for protocol identification.
+
+
+==================== UDP EVIDENCE ====================
+
+[UDP_MACRO_STATS]
+{"rows": 816, "unique_src": 45, "top_src": "172.16.0.5", "top_src_share": 0.795, "udp_len_p50": 2711.0, "udp_len_p90": 2978.5, "udp_len_mean": 2222.55}
+
+[UDP_TOP_SRC_IPS] (ingress to victim if known)
+[["172.16.0.5", 649], ["192.168.137.1", 24], ["192.168.137.58", 22], ["192.168.137.172", 20], ["192.168.137.41", 17]]
+
+[PRIMARY_UDP_LEN_CANDIDATES]
+[[2604, 14], [2865, 11], [2914, 11]]
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 2604, "count": 14}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 2604
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=649 sample=1 udp.length=2604
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 2604
+PAYLOAD_STATS: {"payload_bytes": 37, "printable_ratio": 0.27, "alnum_ratio": 0.243, "entropy": 3.574, "top_ascii_snippets": ["ality1       40       @ e"]}
+ASCII_EXCERPT: ality1 40 @ e
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  00 40 30 86 01 40 72 11 60 cb ac 10 00 05 0a 00   .@0..@r.`.......
+0020  00 07 46 75 6e 63 74 69 6f 6e 61 6c 69 74 79 31   ..Functionality1
+0030  84 00 00 00 03 04 01 34 30 84 00 00 00 10 02 01   .......40.......
+0040  01 65 84 00 00 00 07 0a 01 00 04 00 04 00         .e............
+Reassembled IPv4 (2604 bytes):
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 2865, "count": 11}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 2865
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=649 sample=2 udp.length=2865
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 2865
+PAYLOAD_STATS: {"payload_bytes": 401, "printable_ratio": 0.86, "alnum_ratio": 0.706, "entropy": 4.761, "top_ascii_snippets": ["4  1.2.840.113556.1.4.2065  1.2.840.11 3556.1.4.2066  1.2.840.113556.1.4.2090  1.2.840.113556.1.4.2205  1.2.840.113556.1.4.2204  1.2.84 0.113556.1.4.2206  1.2.840.113556.1.4.2211  1.2.840.113556.1.4.2239  1.2.840.113556.1.4.2255  1.2.840.113556.1.4.22560    \"  supportedLDAPVersion1       3  20        supportedLDAPPolicies1    i  MaxPoolThreads  MaxPercentDirSyncRequests  MaxDatagramRecv  MaxReceive"]}
+ASCII_EXCERPT: 4 1.2.840.113556.1.4.2065 1.2.840.11 3556.1.4.2066 1.2.840.113556.1.4.2090 1.2.840.113556.1.4.2205 1.2.840.113556.1.4.2204 1.2.84 0.113556.1.4.2206 1.2.840.113556.1.4.2211 1.2.840.113556.1.4.2239 1.2.840.113556.1.4.2255 ...
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  05 ad 7d c8 00 b3 71 11 0f a9 ac 10 00 05 0a 00   ..}...q.........
+0020  00 07 2e 31 2e 34 2e 32 30 36 34 04 17 31 2e 32   ...1.4.2064..1.2
+0030  2e 38 34 30 2e 31 31 33 35 35 36 2e 31 2e 34 2e   .840.113556.1.4.
+0040  32 30 36 35 04 17 31 2e 32 2e 38 34 30 2e 31 31   2065..1.2.840.11
+0050  33 35 35 36 2e 31 2e 34 2e 32 30 36 36 04 17 31   3556.1.4.2066..1
+0060  2e 32 2e 38 34 30 2e 31 31 33 35 35 36 2e 31 2e   .2.840.113556.1.
+0070  34 2e 32 30 39 30 04 17 31 2e 32 2e 38 34 30 2e   4.2090..1.2.840.
+0080  31 31 33 35 35 36 2e 31 2e 34 2e 32 32 30 35 04   113556.1.4.2205.
+0090  17 31 2e 32 2e 38 34 30 2e 31 31 33 35 35 36 2e   .1.2.840.113556.
+00a0  31 2e 34 2e 32 32 30 34 04 17 31 2e 32 2e 38 34   1.4.2204..1.2.84
+00b0  30 2e 31 31 33 35 35 36 2e 31 2e 34 2e 32 32 30   0.113556.1.4.220
+00c0  36 04 17 31 2e 32 2e 38 34 30 2e 31 31 33 35 35   6..1.2.840.11355
+00d0  36 2e 31 2e 34 2e 32 32 31 31 04 17 31 2e 32 2e   6.1.4.2211..1.2.
+00e0  38 34 30 2e 31 31 33 35 35 36 2e 31 2e 34 2e 32   840.113556.1.4.2
+00f0  32 33 39 04 17 31 2e 32 2e 38 34 30 2e 31 31 33   239..1.2.840.113
+0100  35 35 36 2e 31 2e 34 2e 32 32 35 35 04 17 31 2e   556.1.4.2255..1.
+0110  32 2e 38 34 30 2e 31 31 33 35 35 36 2e 31 2e 34   2.840.113556.1.4
+0120  2e 32 32 35 36 30 84 00 00 00 22 04 14 73 75 70   .22560...."..sup
+0130  70 6f 72 74 65 64 4c 44 41 50 56 65 72 73 69 6f   portedLDAPVersio
+0140  6e 31 84 00 00 00 06 04 01 33 04 01 32 30 84 00   n1.......3..20..
+0150  00 01 86 04 15 73 75 70 70 6f 72 74 65 64 4c 44   .....supportedLD
+0160  41 50 50 6f 6c 69 63 69 65 73 31 84 00 00 01 69   APPolicies1....i
+0170  04 0e 4d 61 78 50 6f 6f 6c 54 68 72 65 61 64 73   ..MaxPoolThreads
+0180  04 19 4d 61 78 50 65 72 63 65 6e 74 44 69 72 53   ..MaxPercentDirS
+0190  79 6e 63 52 65 71 75 65 73 74 73 04 0f 4d 61 78   yncRequests..Max
+01a0  44 61 74 61 67 72 61 6d 52 65 63 76 04 10 4d 61   DatagramRecv..Ma
+01b0  78 52 65 63 65 69 76 65
+... [TRUNCATED] ...
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 2914, "count": 11}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 2914
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=649 sample=3 udp.length=2914
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 2914
+PAYLOAD_STATS: {"payload_bytes": 349, "printable_ratio": 0.716, "alnum_ratio": 0.613, "entropy": 5.046, "top_ascii_snippets": ["1.4.80 0  1.2.840.113556.1.4.1670  1.2.840.113556.1.4.1791  1.2.840.113556.1.4.1935  1.2.840.113556.1.4.2080  1.2.840.113556.1.4.22370       isSynchronized1       TRUE0    \"  isGlobalCatalogReady1       TRUE0       domainFunctionality1       60   `    forestFunctionality1       60    (  domainControllerFunctionality1       60 `       e"]}
+ASCII_EXCERPT: 1.4.80 0 1.2.840.113556.1.4.1670 1.2.840.113556.1.4.1791 1.2.840.113556.1.4.1935 1.2.840.113556.1.4.2080 1.2.840.113556.1.4.22370 isSynchronized1 TRUE0 " isGlobalCatalogReady1 TRUE0 domainFunctionality1 60 ` forestFuncti...
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  01 76 1c aa 01 40 75 11 70 71 ac 10 00 05 0a 00   .v...@u.pq......
+0020  00 07 2e 31 31 33 35 35 36 2e 31 2e 34 2e 38 30   ...113556.1.4.80
+0030  30 04 17 31 2e 32 2e 38 34 30 2e 31 31 33 35 35   0..1.2.840.11355
+0040  36 2e 31 2e 34 2e 31 36 37 30 04 17 31 2e 32 2e   6.1.4.1670..1.2.
+0050  38 34 30 2e 31 31 33 35 35 36 2e 31 2e 34 2e 31   840.113556.1.4.1
+0060  37 39 31 04 17 31 2e 32 2e 38 34 30 2e 31 31 33   791..1.2.840.113
+0070  35 35 36 2e 31 2e 34 2e 31 39 33 35 04 17 31 2e   556.1.4.1935..1.
+0080  32 2e 38 34 30 2e 31 31 33 35 35 36 2e 31 2e 34   2.840.113556.1.4
+0090  2e 32 30 38 30 04 17 31 2e 32 2e 38 34 30 2e 31   .2080..1.2.840.1
+00a0  31 33 35 35 36 2e 31 2e 34 2e 32 32 33 37 30 84   13556.1.4.22370.
+00b0  00 00 00 1c 04 0e 69 73 53 79 6e 63 68 72 6f 6e   ......isSynchron
+00c0  69 7a 65 64 31 84 00 00 00 06 04 04 54 52 55 45   ized1.......TRUE
+00d0  30 84 00 00 00 22 04 14 69 73 47 6c 6f 62 61 6c   0...."..isGlobal
+00e0  43 61 74 61 6c 6f 67 52 65 61 64 79 31 84 00 00   CatalogReady1...
+00f0  00 06 04 04 54 52 55 45 30 84 00 00 00 1e 04 13   ....TRUE0.......
+0100  64 6f 6d 61 69 6e 46 75 6e 63 74 69 6f 6e 61 6c   domainFunctional
+0110  69 74 79 31 84 00 00 00 03 04 01 36 30 84 00 00   ity1.......60...
+0120  00 1e 04 13 66 6f 72 65 73 74 46 75 6e 63 74 69   ....forestFuncti
+0130  6f 6e 61 6c 69 74 79 31 84 00 00 00 03 04 01 36   onality1.......6
+0140  30 84 00 00 00 28 04 1d 64 6f 6d 61 69 6e 43 6f   0....(..domainCo
+0150  6e 74 72 6f 6c 6c 65 72 46 75 6e 63 74 69 6f 6e   ntrollerFunction
+0160  61 6c 69 74 79 31 84 00 00 00 03 04 01 36 30 84   ality1.......60.
+0170  00 00 00 10 02 01 01 65 84 00 00 00 07 0a 01 00   .......e........
+0180  04 00 04 00                                       ....
+Reassembled IPv4 (2914 bytes):
+
+[PRIMARY_SCAN]
+[{"sample": 1, "udp_length": 2604, "anchors": []}, {"sample": 2, "udp_length": 2865, "anchors": ["113556", "2065", "2066", "2090", "2204", "2205", "2206", "2211", "2239", "2255", "3556"]}, {"sample": 3, "udp_length": 2914, "anchors": ["isGlobalCatalogReady1", "domainFunctionality1", "isSynchronized1", "forestFuncti", "113556", "22370", "TRUE0", "1670", "1791", "1935", "2080"]}]
+
+[PRIMARY_ANCHORS]
+["isGlobalCatalogReady1", "domainFunctionality1", "isSynchronized1", "forestFuncti", "113556", "22370", "TRUE0", "1670", "1791", "1935", "2065", "2066", "2080", "2090", "2204", "2205", "2206", "2211", "2239", "2255"]
+
+=== LLM RAW OUTPUT #1 ===
+<think>
+Alright, let's tackle this problem step by step. I'm a bit new to analyzing DDoS evidence packs, but I'll try to follow the guidelines carefully.
+
+First, I need to determine the payload_style. Looking at the Evidence Pack, I see multiple UDP samples. The key is to examine the payload content. 
+
+In the first UDP sample, the ASCII excerpt is "ality1 40 @ e" which doesn't make much sense. The hex dump shows some bytes, but nothing stands out. However, the second and third samples have more readable content. The second sample's ASCII excerpt includes strings like "1.2.840.113556.1.4.2065" and other similar patterns. These look like OID (Object Identifier) codes, which are commonly used in LDAP (Lightweight Directory Access Protocol). The hex dump confirms this with structures that include "supportedLDAPVersion" and other LDAP-related terms.
+
+The third sample's ASCII excerpt also contains OID-like strings, such as "1.2.840.113556.1.4.1670" and terms like "isSynchronized1", "isGlobalCatalogReady1", which are specific to LDAP directory services. The hex dumps in both samples show clear ASN.1 encoding, which is typical for LDAP responses.
+
+So, the payload_style is "asn1_oid_like" because the content is structured with OIDs and ASN.1 encoding.
+
+Next, determining the attack_family. Since the dominant L4 protocol is UDP (as indicated by "dominant_l4": "UDP" with a high dominance score), and the payload_style is "asn1_oid_like", which suggests a reflection/amplification attack. Therefore, the attack_family is "Reflection/Amplification".
+
+For attack_type, considering the payload contains LDAP-specific OIDs and terms, it points towards an LDAP Reflection attack. The presence of "supportedLDAPVersion" and "isGlobalCatalogReady" in the payloads strongly indicates LDAP traffic. So, the attack_type is "LDAP/CLDAP Reflection".
+
+The verdict is "Malicious" because this is a clear case of a DDoS attack using reflection.
+
+In the analysis trace, the dominant L4 is UDP, and the payload_style is "asn1_oid_like". The primary samples checked are 3, as there are three UDP samples provided. The decision is based on the clear LDAP structures in the payloads.
+
+The key evidence includes the specific OID values and LDAP terms found in the samples. The hypotheses consider LDAP Reflection as the primary, with alternatives like SNMP or Unknown, but the evidence strongly supports LDAP.
+
+Recommended actions include filtering traffic from the top source IPs, blocking UDP ports used, and contacting the network administrator.
+</think>
+
+```json
+{
+  "verdict": "Malicious",
+  "attack_family": "Reflection/Amplification",
+  "attack_type": "LDAP/CLDAP Reflection",
+  "analysis_trace": {
+    "dominant_l4_used": "UDP",
+    "victim_guess_used": "10.0.0.7",
+    "primary_samples_checked": 3,
+    "payload_style": "asn1_oid_like",
+    "hypotheses": [
+      {
+        "name": "LDAP/CLDAP Reflection",
+        "evidence_for": [
+          "ASCII_EXCERPT contains `supportedLDAPVersion`",
+          "HEX_DUMP shows `supportedLDAPVersion` and `isGlobalCatalogReady`"
+        ],
+        "evidence_against": [
+          "No clear evidence of other reflection types"
+        ],
+        "score": 0.95
+      },
+      {
+        "name": "SNMP Reflection",
+        "evidence_for": [
+          "Payload structure resembles ASN.1 encoding"
+        ],
+        "evidence_against": [
+          "No `public` or typical SNMP OID patterns found"
+        ],
+        "score": 0.05
+      },
+      {
+        "name": "Unknown",
+        "evidence_for": [],
+        "evidence_against": [
+          "Clear LDAP-related patterns in payload"
+        ],
+        "score": 0.0
+      }
+    ],
+    "decision": "The payload contains multiple LDAP-specific OID values and terms like `supportedLDAPVersion` and `isGlobalCatalogReady`, indicating an LDAP Reflection attack."
+  },
+  "key_evidence": [
+    "ASCII_EXCERPT includes `1.2.840.113556.1.4.2065` and `supportedLDAPVersion`",
+    "HEX_DUMP shows `supportedLDAPVersion` and `isGlobalCatalogReady`"
+  ],
+  "reasoning": "The evidence pack shows UDP packets with ASN.1 structures and LDAP-specific OIDs, indicating an LDAP Reflection attack.",
+  "recommended_actions": [
+    "Block traffic from source IPs: 172.16.0.5, 192.168.137.1, etc.",
+    "Filter UDP traffic targeting the victim IP 10.0
+
+=== LLM RAW OUTPUT #2 ===
+<think>
+Okay, let's try to figure out what's going on here. I'm looking at this Evidence Pack, and I need to determine if it's a DDoS attack and what type it is. 
+
+First, the Evidence Pack shows that the dominant protocol is UDP, with a dominance score of 0.952. That means most of the traffic is UDP, so I should focus on that. The victim is guessed to be 10.0.0.7. 
+
+Looking at the UDP samples, there are three primary UDP lengths: 2604, 2865, and 2914 bytes. Each sample has an ASCII excerpt and a hex dump. Let's look at the payloads.
+
+In the first UDP sample, the ASCII excerpt is "ality1 40 @ e" which doesn't make much sense. The hex dump shows some bytes, but nothing stands out. The payload stats have a low printable ratio and entropy, suggesting it's not very structured.
+
+The second sample has a longer ASCII excerpt with sequences like "1.2.840.113556.1.4.2065" and mentions "supportedLDAPVersion". The hex dump confirms this with OID-like structures. This looks like LDAP or CLDAP responses, which are used in reflection attacks.
+
+The third sample continues with similar OIDs, including "isGlobalCatalogReady" and "domainFunctionality". These are terms related to Active Directory, which is managed via LDAP. 
+
+The PRIMARY_ANCHORS list includes terms like "isGlobalCatalogReady1", "supportedLDAPVersion", and "domainFunctionality1", which are all consistent with LDAP directory responses. 
+
+Putting this together, the payload structure is ASN.1 encoded, which is typical for LDAP. The presence of specific OIDs and terms related to LDAP confirms that this is likely an LDAP reflection attack. 
+
+Since the dominant L4 is UDP and the payload matches LDAP reflection, the attack family is Reflection/Amplification, and the type is LDAP/CLDAP Reflection.
+</think>
+
+```json
+{
+  "verdict": "Malicious",
+  "attack_family": "Reflection/Amplification",
+  "attack_type": "LDAP/CLDAP Reflection",
+  "analysis_trace": {
+    "dominant_l4_used": "UDP",
+    "victim_guess_used": "10.0.0.7",
+    "primary_samples_checked": 3,
+    "payload_style": "asn1_oid_like",
+    "hypotheses": [
+      {
+        "name": "LDAP/CLDAP Reflection",
+        "evidence_for": [
+          "ASCII excerpt contains `supportedLDAPVersion`",
+          "Hex dump shows OID `1.2.840.113556`",
+          "PRIMARY_ANCHORS include `isGlobalCatalogReady1` and `domainFunctionality1`"
+        ],
+        "evidence_against": [
+          "No evidence of DNS or other reflection types"
+        ],
+        "score": 0.9
+      },
+      {
+        "name": "Unknown",
+        "evidence_for": [
+          "Multiple OID values could indicate another protocol"
+        ],
+        "evidence_against": [
+          "Specific LDAP-related terms in ASCII"
+        ],
+        "score": 0.1
+      }
+    ],
+    "decision": "The payload contains specific LDAP-related OIDs and terms, indicating an LDAP/CLDAP reflection attack."
+  },
+  "key_evidence": [
+    "`supportedLDAPVersion1` in ASCII excerpt",
+    "`1.2.840.113556` in hex dump",
+    "`isGlobalCatalogReady1` in PRIMARY_ANCHORS"
+  ],
+  "reasoning": "The payload structure and content, including specific OIDs and LDAP-related terms, clearly indicate an LDAP/CLDAP reflection attack.",
+  "recommended_actions": [
+    "Block traffic from known attackers",
+    "Implement rate-limiting on UDP traffic",
+    "Verify LDAP service configurations",
+    "Monitor for unusual DNS or LDAP queries"
+  ],
+  "confidence": 0.9
+}
+```
+
+=== FINAL VERDICT ===
+Verdict: Malicious
+Attack Type: LDAP/CLDAP Reflection
+Key Evidence:
+- `supportedLDAPVersion1` in ASCII excerpt
+- `1.2.840.113556` in hex dump
+- `isGlobalCatalogReady1` in PRIMARY_ANCHORS
+Reasoning: The payload structure and content, including specific OIDs and LDAP-related terms, clearly indicate an LDAP/CLDAP reflection attack.
+====================================================================================================
+
+####################################################################################################
+[INCIDENT]: 2026-01-29 17:30:21
+####################################################################################################
+=== COUNTER ALERT ===
+Anomaly at T=633.0s | Count=2
+
+=== TRIAGE (SFLOW) ===
+{
+  "victim_guess": "10.0.0.7",
+  "dominant_l4": "UDP",
+  "dominance_score": 0.958,
+  "proto_counts": {
+    "UDP": 293,
+    "TCP": 13
+  },
+  "tcp_flags_stats": {
+    "source_column": "tcp_flags",
+    "total_tcp_samples": 13,
+    "syn_ratio": 0.0,
+    "ack_ratio": 1.0,
+    "rst_ratio": 0.0,
+    "fin_ratio": 0.0,
+    "psh_ratio": 0.231
+  },
+  "rows": 306
+}
+
+=== EVIDENCE (STRUCTURED) ===
+[PCAP_SELECTED]
+/home/haodong_chen/pangu/log/timestep_pcap/633s-657s.pcap
+
+[SFLOW_TRIAGE]
+{"victim_guess": "10.0.0.7", "dominant_l4": "UDP", "dominance_score": 0.958, "proto_counts": {"UDP": 293, "TCP": 13}, "tcp_flags_stats": {"source_column": "tcp_flags", "total_tcp_samples": 13, "syn_ratio": 0.0, "ack_ratio": 1.0, "rst_ratio": 0.0, "fin_ratio": 0.0, "psh_ratio": 0.231}, "rows": 306}
+
+IMPORTANT: CICDDoS2019 may randomize ports; do NOT rely on port numbers for protocol identification.
+
+
+==================== UDP EVIDENCE ====================
+
+[UDP_MACRO_STATS]
+{"rows": 7248, "unique_src": 34, "top_src": "172.16.0.5", "top_src_share": 0.987, "udp_len_p50": 1386.0, "udp_len_p90": 1534.0, "udp_len_mean": 1386.88}
+
+[UDP_TOP_SRC_IPS] (ingress to victim if known)
+[["172.16.0.5", 7156], ["192.168.137.1", 11], ["192.168.137.58", 11], ["192.168.137.148", 8], ["192.168.137.172", 8]]
+
+[PRIMARY_UDP_LEN_CANDIDATES]
+[[1382, 114], [1379, 110], [1378, 102]]
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 1382, "count": 114}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 1382
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=7156 sample=1 udp.length=1382
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 1382
+PAYLOAD_STATS: {"payload_bytes": 408, "printable_ratio": 0.485, "alnum_ratio": 0.38, "entropy": 5.334, "top_ascii_snippets": ["0  Z     public   K   1        0  ;0R  +        FLinux Grivetto Ombretta 2.6.32.27 #2 2'Fri Jan 27 17:10'  :04 EET 2017 mip s0   +         +      1 0   +       C     0   +         undefined0   +         C ambiumNetworks0   +         undefined0   +         N0   +       C  A0   +            +        07   +          )View-based Access Control Model for SNMP.0   +         C  A0   +           0   +"]}
+ASCII_EXCERPT: 0 Z public K 1 0 ;0R + FLinux Grivetto Ombretta 2.6.32.27 #2 2'Fri Jan 27 17:10' :04 EET 2017 mip s0 + + 1 0 + C 0 + undefined0 + C ambiumNetworks0 + undefined0 + N0 + C A0 + + 07 + )View-based Access Control Model for S...
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  05 7a 00 00 40 00 34 11 8b 57 ac 10 00 05 0a 00   .z..@.4..W......
+0020  00 07 02 3b 33 ca 05 66 f4 5a 30 82 05 5a 02 01   ...;3..f.Z0..Z..
+0030  01 04 06 70 75 62 6c 69 63 a2 82 05 4b 02 04 9b   ...public...K...
+0040  31 86 86 02 01 00 02 01 00 30 82 05 3b 30 52 06   1........0..;0R.
+0050  08 2b 06 01 02 01 01 01 00 04 46 4c 69 6e 75 78   .+........FLinux
+0060  20 47 72 69 76 65 74 74 6f 20 4f 6d 62 72 65 74    Grivetto Ombret
+0070  74 61 20 32 2e 36 2e 33 32 2e 32 37 20 23 32 20   ta 2.6.32.27 #2 
+0080  46 72 69 20 4a 61 6e 20 32 37 20 31 37 3a 31 30   Fri Jan 27 17:10
+0090  3a 30 34 20 45 45 54 20 32 30 31 37 20 6d 69 70   :04 EET 2017 mip
+00a0  73 30 15 06 08 2b 06 01 02 01 01 02 00 06 09 2b   s0...+.........+
+00b0  06 01 04 01 81 8a 31 15 30 10 06 08 2b 06 01 02   ......1.0...+...
+00c0  01 01 03 00 43 04 06 08 e1 a8 30 15 06 08 2b 06   ....C.....0...+.
+00d0  01 02 01 01 04 00 04 09 75 6e 64 65 66 69 6e 65   ........undefine
+00e0  64 30 1b 06 08 2b 06 01 02 01 01 05 00 04 0f 43   d0...+.........C
+00f0  61 6d 62 69 75 6d 4e 65 74 77 6f 72 6b 73 30 15   ambiumNetworks0.
+0100  06 08 2b 06 01 02 01 01 06 00 04 09 75 6e 64 65   ..+.........unde
+0110  66 69 6e 65 64 30 0d 06 08 2b 06 01 02 01 01 07   fined0...+......
+0120  00 02 01 4e 30 0e 06 08 2b 06 01 02 01 01 08 00   ...N0...+.......
+0130  43 02 0e 41 30 17 06 0a 2b 06 01 02 01 01 09 01   C..A0...+.......
+0140  02 01 06 09 2b 06 01 06 03 10 02 02 01 30 37 06   ....+........07.
+0150  0a 2b 06 01 02 01 01 09 01 03 01 04 29 56 69 65   .+..........)Vie
+0160  77 2d 62 61 73 65 64 20 41 63 63 65 73 73 20 43   w-based Access C
+0170  6f 6e 74 72 6f 6c 20 4d 6f 64 65 6c 20 66 6f 72   ontrol Model for
+0180  20 53 4e 4d 50 2e 30 10 06 0a 2b 06 01 02 01 01    SNMP.0...+.....
+0190  09 01 04 01 43 02 0e 41 30 0d 06 08 2b 06 01 02   ....C..A0...+...
+01a0  01 02 01 00 02 01 03 30 0f 06 0a 2b 06 01 02 01   .......0...+....
+01b0  02 02 01 01 01 02 01 01
+... [TRUNCATED] ...
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 1379, "count": 110}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 1379
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=7156 sample=2 udp.length=1379
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 1379
+PAYLOAD_STATS: {"payload_bytes": 404, "printable_ratio": 0.49, "alnum_ratio": 0.384, "entropy": 5.375, "top_ascii_snippets": ["0  W     public   H            0  80T  +        HLinux DI NOTO ANTONIO 5634 2.6.32.27 2'#2 Tue Dec 5 14: 09:43 EET 2017 m Cips0   +         +      1    0   +       C   e 0   +         undefined0   +         CambiumNetworks0   +         undefined0   +         N0   +       C   0   +           +        07  +           )View-based Access Control Model for SNMP.0   +         C   0   +          0   +"]}
+ASCII_EXCERPT: 0 W public H 0 80T + HLinux DI NOTO ANTONIO 5634 2.6.32.27 2'#2 Tue Dec 5 14: 09:43 EET 2017 m Cips0 + + 1 0 + C e 0 + undefined0 + CambiumNetworks0 + undefined0 + N0 + C 0 + + 07 + )View-based Access Control Model for S...
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  05 77 00 00 40 00 33 11 8c 5a ac 10 00 05 0a 00   .w..@.3..Z......
+0020  00 07 02 d0 f8 03 05 63 8a 59 30 82 05 57 02 01   .......c.Y0..W..
+0030  01 04 06 70 75 62 6c 69 63 a2 82 05 48 02 04 bf   ...public...H...
+0040  f4 d5 ba 02 01 00 02 01 00 30 82 05 38 30 54 06   .........0..80T.
+0050  08 2b 06 01 02 01 01 01 00 04 48 4c 69 6e 75 78   .+........HLinux
+0060  20 44 49 20 4e 4f 54 4f 20 41 4e 54 4f 4e 49 4f    DI NOTO ANTONIO
+0070  20 35 36 33 34 20 32 2e 36 2e 33 32 2e 32 37 20    5634 2.6.32.27 
+0080  23 32 20 54 75 65 20 44 65 63 20 35 20 31 34 3a   #2 Tue Dec 5 14:
+0090  30 39 3a 34 33 20 45 45 54 20 32 30 31 37 20 6d   09:43 EET 2017 m
+00a0  69 70 73 30 18 06 08 2b 06 01 02 01 01 02 00 06   ips0...+........
+00b0  0c 2b 06 01 04 01 81 8a 31 15 01 01 02 30 10 06   .+......1....0..
+00c0  08 2b 06 01 02 01 01 03 00 43 04 01 7f 65 a6 30   .+.......C...e.0
+00d0  15 06 08 2b 06 01 02 01 01 04 00 04 09 75 6e 64   ...+.........und
+00e0  65 66 69 6e 65 64 30 1b 06 08 2b 06 01 02 01 01   efined0...+.....
+00f0  05 00 04 0f 43 61 6d 62 69 75 6d 4e 65 74 77 6f   ....CambiumNetwo
+0100  72 6b 73 30 15 06 08 2b 06 01 02 01 01 06 00 04   rks0...+........
+0110  09 75 6e 64 65 66 69 6e 65 64 30 0d 06 08 2b 06   .undefined0...+.
+0120  01 02 01 01 07 00 02 01 4e 30 0e 06 08 2b 06 01   ........N0...+..
+0130  02 01 01 08 00 43 02 00 fc 30 17 06 0a 2b 06 01   .....C...0...+..
+0140  02 01 01 09 01 02 01 06 09 2b 06 01 06 03 10 02   .........+......
+0150  02 01 30 37 06 0a 2b 06 01 02 01 01 09 01 03 01   ..07..+.........
+0160  04 29 56 69 65 77 2d 62 61 73 65 64 20 41 63 63   .)View-based Acc
+0170  65 73 73 20 43 6f 6e 74 72 6f 6c 20 4d 6f 64 65   ess Control Mode
+0180  6c 20 66 6f 72 20 53 4e 4d 50 2e 30 10 06 0a 2b   l for SNMP.0...+
+0190  06 01 02 01 01 09 01 04 01 43 02 00 fc 30 0d 06   .........C...0..
+01a0  08 2b 06 01 02 01 02 01 00 02 01 03 30 0f 06 0a   .+..........0...
+01b0  2b 06 01 02 01 02 02 01
+... [TRUNCATED] ...
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 1378, "count": 102}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 1378
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=7156 sample=3 udp.length=1378
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 1378
+PAYLOAD_STATS: {"payload_bytes": 403, "printable_ratio": 0.504, "alnum_ratio": 0.395, "entropy": 5.36, "top_ascii_snippets": ["0  V     public   G            0  70Z  +        NLinux Adrian Constantin Negoita 2.6.32.27 #2 Fri Jul '6 19:21:11 EEST  ! 2018 mips0   +         +      1    0   +       C }  0   +         undefined0   +         CambiumNetworks0   +         undefined0   +         N0   +       C   0   +           +        07  +           )View-based Access Control Model for SNMP.0   +         C   0   +          0   +"]}
+ASCII_EXCERPT: 0 V public G 0 70Z + NLinux Adrian Constantin Negoita 2.6.32.27 #2 Fri Jul '6 19:21:11 EEST ! 2018 mips0 + + 1 0 + C } 0 + undefined0 + CambiumNetworks0 + undefined0 + N0 + C 0 + + 07 + )View-based Access Control Model f...
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  05 76 00 00 40 00 33 11 8c 5b ac 10 00 05 0a 00   .v..@.3..[......
+0020  00 07 03 f3 82 2a 05 62 e7 40 30 82 05 56 02 01   .....*.b.@0..V..
+0030  01 04 06 70 75 62 6c 69 63 a2 82 05 47 02 04 8a   ...public...G...
+0040  08 0e 01 02 01 00 02 01 00 30 82 05 37 30 5a 06   .........0..70Z.
+0050  08 2b 06 01 02 01 01 01 00 04 4e 4c 69 6e 75 78   .+........NLinux
+0060  20 41 64 72 69 61 6e 20 43 6f 6e 73 74 61 6e 74    Adrian Constant
+0070  69 6e 20 4e 65 67 6f 69 74 61 20 32 2e 36 2e 33   in Negoita 2.6.3
+0080  32 2e 32 37 20 23 32 20 46 72 69 20 4a 75 6c 20   2.27 #2 Fri Jul 
+0090  36 20 31 39 3a 32 31 3a 31 31 20 45 45 53 54 20   6 19:21:11 EEST 
+00a0  32 30 31 38 20 6d 69 70 73 30 18 06 08 2b 06 01   2018 mips0...+..
+00b0  02 01 01 02 00 06 0c 2b 06 01 04 01 81 8a 31 15   .......+......1.
+00c0  01 01 02 30 0f 06 08 2b 06 01 02 01 01 03 00 43   ...0...+.......C
+00d0  03 7d 8d 99 30 15 06 08 2b 06 01 02 01 01 04 00   .}..0...+.......
+00e0  04 09 75 6e 64 65 66 69 6e 65 64 30 1b 06 08 2b   ..undefined0...+
+00f0  06 01 02 01 01 05 00 04 0f 43 61 6d 62 69 75 6d   .........Cambium
+0100  4e 65 74 77 6f 72 6b 73 30 15 06 08 2b 06 01 02   Networks0...+...
+0110  01 01 06 00 04 09 75 6e 64 65 66 69 6e 65 64 30   ......undefined0
+0120  0d 06 08 2b 06 01 02 01 01 07 00 02 01 4e 30 0e   ...+.........N0.
+0130  06 08 2b 06 01 02 01 01 08 00 43 02 00 f7 30 17   ..+.......C...0.
+0140  06 0a 2b 06 01 02 01 01 09 01 02 01 06 09 2b 06   ..+...........+.
+0150  01 06 03 10 02 02 01 30 37 06 0a 2b 06 01 02 01   .......07..+....
+0160  01 09 01 03 01 04 29 56 69 65 77 2d 62 61 73 65   ......)View-base
+0170  64 20 41 63 63 65 73 73 20 43 6f 6e 74 72 6f 6c   d Access Control
+0180  20 4d 6f 64 65 6c 20 66 6f 72 20 53 4e 4d 50 2e    Model for SNMP.
+0190  30 10 06 0a 2b 06 01 02 01 01 09 01 04 01 43 02   0...+.........C.
+01a0  00 f7 30 0d 06 08 2b 06 01 02 01 02 01 00 02 01   ..0...+.........
+01b0  03 30 0f 06 0a 2b 06 01
+... [TRUNCATED] ...
+
+[PRIMARY_SCAN]
+[{"sample": 1, "udp_length": 1382, "anchors": ["ambiumNetworks0", "undefined0", "Grivetto", "Ombretta", "2017"]}, {"sample": 2, "udp_length": 1379, "anchors": ["CambiumNetworks0", "undefined0", "ANTONIO", "2017", "5634", "NOTO"]}, {"sample": 3, "udp_length": 1378, "anchors": ["CambiumNetworks0", "Constantin", "undefined0", "2018", "EEST"]}]
+
+[PRIMARY_ANCHORS]
+["CambiumNetworks0", "ambiumNetworks0", "Constantin", "undefined0", "Grivetto", "Ombretta", "ANTONIO", "2017", "2018", "5634", "EEST", "NOTO"]
+
+=== LLM RAW OUTPUT #1 ===
+<think>
+Alright, I'm trying to figure out this DDoS incident. Let me start by looking at the Evidence Pack provided. 
+
+First, the SFLOW_TRIAGE shows that the dominant L4 is UDP with a dominance score of 0.958. That means most of the traffic is UDP, so I should focus on that. The victim is guessed to be 10.0.0.7.
+
+Looking at the UDP samples, the top source IP is 172.16.0.5, which is responsible for most of the traffic. The UDP lengths are around 1382, 1379, and 1378 bytes, which are quite large. The payload stats show a printable ratio around 0.48-0.5, which isn't very high, and the entropy is around 5.3, indicating some structure but not completely random.
+
+The ASCII excerpts from the UDP samples show strings like "public", "View-based Access Control Model for SNMP", and "CambiumNetworks0". These are meaningful and suggest that the payload isn't just random noise. The presence of "public" and SNMP-related terms makes me think this could be an SNMP reflection attack.
+
+The HEX dumps show some structure with repeated patterns and ASN.1 encoding, which aligns with SNMP messages. The primary anchors include terms like "CambiumNetworks0", "undefined0", and specific names, which further support the idea that this is a reflection attack using SNMP.
+
+Considering the payload_style, the presence of structured data with recognizable strings and ASN.1 encoding points towards "asn1_oid_like". Since the dominant L4 is UDP and the payload isn't random, the attack_family is likely "Reflection/Amplification". 
+
+For attack_type, the evidence clearly shows references to SNMP, so "SNMP Reflection" makes sense. The alternatives could be "Unknown" if the evidence wasn't clear, but the specific mentions of SNMP terms make it more certain.
+
+I should also check if there are any TCP flags, but since it's mostly UDP, the TCP stats don't play a big role here. The key evidence includes the exact substrings from the payloads, which back up the SNMP reflection conclusion.
+
+So, putting it all together, the verdict is Malicious, attack_family is Reflection/Amplification, and attack_type is SNMP Reflection. The reasoning is based on the structured payload with specific SNMP-related content.
+</think>
+
+```json
+{
+  "verdict": "Malicious",
+  "attack_family": "Reflection/Amplification",
+  "attack_type": "SNMP Reflection",
+  "analysis_trace": {
+    "dominant_l4_used": "UDP",
+    "victim_guess_used": "10.0.0.7",
+    "primary_samples_checked": 3,
+    "payload_style": "asn1_oid_like",
+    "hypotheses": [
+      {
+        "name": "SNMP Reflection",
+        "evidence_for": [
+          "ASCII_EXCERPT contains `View-based Access Control Model for SNMP`",
+          "HEX_DUMP shows ASN.1/BER encoded structures with `30 82` prefix"
+        ],
+        "evidence_against": [
+          "No evidence of DNS, NetBIOS, or other reflection types in payloads"
+        ],
+        "score": 0.9
+      },
+      {
+        "name": "Unknown",
+        "evidence_for": [
+          "Multiple samples show similar structure but unclear service"
+        ],
+        "evidence_against": [
+          "Specific `SNMP`-related strings in payloads"
+        ],
+        "score": 0.1
+      }
+    ],
+    "decision": "Payload contains `View-based Access Control Model for SNMP` and ASN.1/BER encoding, indicating SNMP Reflection."
+  },
+  "key_evidence": [
+    "ASCII_EXCERPT: `View-based Access Control Model for SNMP`",
+    "HEX_DUMP: `30 82` indicating ASN.1/BER encoding",
+    "PRIMARY_ANCHORS include `CambiumNetworks0` and `undefined0`"
+  ],
+  "reasoning": "The presence of `View-based Access Control Model for SNMP` in ASCII and ASN.1/BER structures in HEX Dump strongly indicates SNMP Reflection attack.",
+  "recommended_actions": [
+    "Block traffic from source IPs identified in [UDP_TOP_SRC_IPS]",
+    "Implement specific filtering for SNMP reflection attacks",
+    "Verify and patch SNMP services on the network",
+    "Monitor for similar patterns in UDP traffic"
+  ],
+  "confidence": 0.9
+}
+```
+
+=== FINAL VERDICT ===
+Verdict: Malicious
+Attack Type: SNMP Reflection
+Key Evidence:
+- ASCII_EXCERPT: `View-based Access Control Model for SNMP`
+- HEX_DUMP: `30 82` indicating ASN.1/BER encoding
+- PRIMARY_ANCHORS include `CambiumNetworks0` and `undefined0`
+Reasoning: The presence of `View-based Access Control Model for SNMP` in ASCII and ASN.1/BER structures in HEX Dump strongly indicates SNMP Reflection attack.
+====================================================================================================
+
+####################################################################################################
+[INCIDENT]: 2026-01-29 17:31:23
+####################################################################################################
+=== COUNTER ALERT ===
+Anomaly at T=691.0s | Count=2
+
+=== TRIAGE (SFLOW) ===
+{
+  "victim_guess": "10.0.0.7",
+  "dominant_l4": "UDP",
+  "dominance_score": 0.924,
+  "proto_counts": {
+    "UDP": 182,
+    "TCP": 15
+  },
+  "tcp_flags_stats": {
+    "source_column": "tcp_flags",
+    "total_tcp_samples": 15,
+    "syn_ratio": 0.0,
+    "ack_ratio": 1.0,
+    "rst_ratio": 0.0,
+    "fin_ratio": 0.0,
+    "psh_ratio": 0.133
+  },
+  "rows": 197
+}
+
+=== EVIDENCE (STRUCTURED) ===
+[PCAP_SELECTED]
+/home/haodong_chen/pangu/log/timestep_pcap/691s-732s.pcap
+
+[SFLOW_TRIAGE]
+{"victim_guess": "10.0.0.7", "dominant_l4": "UDP", "dominance_score": 0.924, "proto_counts": {"UDP": 182, "TCP": 15}, "tcp_flags_stats": {"source_column": "tcp_flags", "total_tcp_samples": 15, "syn_ratio": 0.0, "ack_ratio": 1.0, "rst_ratio": 0.0, "fin_ratio": 0.0, "psh_ratio": 0.133}, "rows": 197}
+
+IMPORTANT: CICDDoS2019 may randomize ports; do NOT rely on port numbers for protocol identification.
+
+
+==================== UDP EVIDENCE ====================
+
+[UDP_MACRO_STATS]
+{"rows": 45491, "unique_src": 50, "top_src": "172.16.0.5", "top_src_share": 0.995, "udp_len_p50": 491.0, "udp_len_p90": 765.0, "udp_len_mean": 557.71}
+
+[UDP_TOP_SRC_IPS] (ingress to victim if known)
+[["172.16.0.5", 45255], ["192.168.137.1", 34], ["192.168.137.58", 26], ["192.168.137.172", 22], ["192.168.137.41", 18]]
+
+[PRIMARY_UDP_LEN_CANDIDATES]
+[[465, 1190], [463, 964], [471, 818]]
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 465, "count": 1190}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 465
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=45255 sample=1 udp.length=465
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 465
+PAYLOAD_STATS: {"payload_bytes": 404, "printable_ratio": 0.983, "alnum_ratio": 0.827, "entropy": 5.176, "top_ascii_snippets": ["ServerName;WIN-TUSQ909I0K3;InstanceName;MSSQLSERVER;IsClustered;No;Version;10.50.40 P@00.0;tcp;1433;np ;\\\\WIN-TUSQ909I0K3\\pipe\\sql\\query;;ServerName;WIN-TUSQ909I0K3;InstanceName;MSSQLSERVER2012;IsClustered;No;Version;11.0.3000.0;tc p;50009;np;\\\\WIN-TUSQ909I0K3\\pipe\\MSSQL$MSSQLSERVER2012\\sql\\query;;ServerName;WIN-TUSQ909I0K3;InstanceName;MSSQLSERVER2014;IsClustered;No;Version;12.0.2000.8;tc p;50036;"]}
+ASCII_EXCERPT: ServerName;WIN-TUSQ909I0K3;InstanceName;MSSQLSERVER;IsClustered;No;Version;10.50.40 P@00.0;tcp;1433;np ;\\WIN-TUSQ909I0K3\pipe\sql\query;;ServerName;WIN-TUSQ909I0K3;InstanceName;MSSQLSERVER2012;IsClustered;No;Version;11....
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  01 e5 73 01 00 00 6e 11 21 eb ac 10 00 05 0a 00   ..s...n.!.......
+0020  00 07 28 92 9f 8b 01 d1 85 a7 05 c6 01 53 65 72   ..(..........Ser
+0030  76 65 72 4e 61 6d 65 3b 57 49 4e 2d 54 55 53 51   verName;WIN-TUSQ
+0040  39 30 39 49 30 4b 33 3b 49 6e 73 74 61 6e 63 65   909I0K3;Instance
+0050  4e 61 6d 65 3b 4d 53 53 51 4c 53 45 52 56 45 52   Name;MSSQLSERVER
+0060  3b 49 73 43 6c 75 73 74 65 72 65 64 3b 4e 6f 3b   ;IsClustered;No;
+0070  56 65 72 73 69 6f 6e 3b 31 30 2e 35 30 2e 34 30   Version;10.50.40
+0080  30 30 2e 30 3b 74 63 70 3b 31 34 33 33 3b 6e 70   00.0;tcp;1433;np
+0090  3b 5c 5c 57 49 4e 2d 54 55 53 51 39 30 39 49 30   ;\\WIN-TUSQ909I0
+00a0  4b 33 5c 70 69 70 65 5c 73 71 6c 5c 71 75 65 72   K3\pipe\sql\quer
+00b0  79 3b 3b 53 65 72 76 65 72 4e 61 6d 65 3b 57 49   y;;ServerName;WI
+00c0  4e 2d 54 55 53 51 39 30 39 49 30 4b 33 3b 49 6e   N-TUSQ909I0K3;In
+00d0  73 74 61 6e 63 65 4e 61 6d 65 3b 4d 53 53 51 4c   stanceName;MSSQL
+00e0  53 45 52 56 45 52 32 30 31 32 3b 49 73 43 6c 75   SERVER2012;IsClu
+00f0  73 74 65 72 65 64 3b 4e 6f 3b 56 65 72 73 69 6f   stered;No;Versio
+0100  6e 3b 31 31 2e 30 2e 33 30 30 30 2e 30 3b 74 63   n;11.0.3000.0;tc
+0110  70 3b 35 30 30 30 39 3b 6e 70 3b 5c 5c 57 49 4e   p;50009;np;\\WIN
+0120  2d 54 55 53 51 39 30 39 49 30 4b 33 5c 70 69 70   -TUSQ909I0K3\pip
+0130  65 5c 4d 53 53 51 4c 24 4d 53 53 51 4c 53 45 52   e\MSSQL$MSSQLSER
+0140  56 45 52 32 30 31 32 5c 73 71 6c 5c 71 75 65 72   VER2012\sql\quer
+0150  79 3b 3b 53 65 72 76 65 72 4e 61 6d 65 3b 57 49   y;;ServerName;WI
+0160  4e 2d 54 55 53 51 39 30 39 49 30 4b 33 3b 49 6e   N-TUSQ909I0K3;In
+0170  73 74 61 6e 63 65 4e 61 6d 65 3b 4d 53 53 51 4c   stanceName;MSSQL
+0180  53 45 52 56 45 52 32 30 31 34 3b 49 73 43 6c 75   SERVER2014;IsClu
+0190  73 74 65 72 65 64 3b 4e 6f 3b 56 65 72 73 69 6f   stered;No;Versio
+01a0  6e 3b 31 32 2e 30 2e 32 30 30 30 2e 38 3b 74 63   n;12.0.2000.8;tc
+01b0  70 3b 35 30 30 33 36 3b
+... [TRUNCATED] ...
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 463, "count": 964}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 463
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=45255 sample=2 udp.length=463
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 463
+PAYLOAD_STATS: {"payload_bytes": 401, "printable_ratio": 0.985, "alnum_ratio": 0.843, "entropy": 5.046, "top_ascii_snippets": ["ServerName;WIN-S22NG000QG7;InstanceName;MSSQLSERVER2012;IsClustered;No;Version;11.0 .6020.0;tcp;49999;np;\\\\WIN-S22NG000QG7\\pipe\\MSSQL$MSSQLSERVER2012\\sql\\query;;ServerName;WIN-S22NG000QG7;InstanceName;MSSQLSERVER;IsClustered;No;Version;10.0.550 0.0;tcp;1433;;ServerName;WIN-S22NG000QG7;InstanceName;SQLEXPRESS2014;IsClustered;No;Version;12.0 .2000.8;;ServerName;WIN-S22NG000QG7;InstanceName;MSSQLSE"]}
+ASCII_EXCERPT: ServerName;WIN-S22NG000QG7;InstanceName;MSSQLSERVER2012;IsClustered;No;Version;11.0 .6020.0;tcp;49999;np;\\WIN-S22NG000QG7\pipe\MSSQL$MSSQLSERVER2012\sql\query;;ServerName;WIN-S22NG000QG7;InstanceName;MSSQLSERVER;IsClust...
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  01 e3 6f 69 00 00 6e 11 25 85 ac 10 00 05 0a 00   ..oi..n.%.......
+0020  00 07 28 9c 85 a3 01 cf b5 f8 05 c4 01 53 65 72   ..(..........Ser
+0030  76 65 72 4e 61 6d 65 3b 57 49 4e 2d 53 32 32 4e   verName;WIN-S22N
+0040  47 30 30 30 51 47 37 3b 49 6e 73 74 61 6e 63 65   G000QG7;Instance
+0050  4e 61 6d 65 3b 4d 53 53 51 4c 53 45 52 56 45 52   Name;MSSQLSERVER
+0060  32 30 31 32 3b 49 73 43 6c 75 73 74 65 72 65 64   2012;IsClustered
+0070  3b 4e 6f 3b 56 65 72 73 69 6f 6e 3b 31 31 2e 30   ;No;Version;11.0
+0080  2e 36 30 32 30 2e 30 3b 74 63 70 3b 34 39 39 39   .6020.0;tcp;4999
+0090  39 3b 6e 70 3b 5c 5c 57 49 4e 2d 53 32 32 4e 47   9;np;\\WIN-S22NG
+00a0  30 30 30 51 47 37 5c 70 69 70 65 5c 4d 53 53 51   000QG7\pipe\MSSQ
+00b0  4c 24 4d 53 53 51 4c 53 45 52 56 45 52 32 30 31   L$MSSQLSERVER201
+00c0  32 5c 73 71 6c 5c 71 75 65 72 79 3b 3b 53 65 72   2\sql\query;;Ser
+00d0  76 65 72 4e 61 6d 65 3b 57 49 4e 2d 53 32 32 4e   verName;WIN-S22N
+00e0  47 30 30 30 51 47 37 3b 49 6e 73 74 61 6e 63 65   G000QG7;Instance
+00f0  4e 61 6d 65 3b 4d 53 53 51 4c 53 45 52 56 45 52   Name;MSSQLSERVER
+0100  3b 49 73 43 6c 75 73 74 65 72 65 64 3b 4e 6f 3b   ;IsClustered;No;
+0110  56 65 72 73 69 6f 6e 3b 31 30 2e 30 2e 35 35 30   Version;10.0.550
+0120  30 2e 30 3b 74 63 70 3b 31 34 33 33 3b 3b 53 65   0.0;tcp;1433;;Se
+0130  72 76 65 72 4e 61 6d 65 3b 57 49 4e 2d 53 32 32   rverName;WIN-S22
+0140  4e 47 30 30 30 51 47 37 3b 49 6e 73 74 61 6e 63   NG000QG7;Instanc
+0150  65 4e 61 6d 65 3b 53 51 4c 45 58 50 52 45 53 53   eName;SQLEXPRESS
+0160  32 30 31 34 3b 49 73 43 6c 75 73 74 65 72 65 64   2014;IsClustered
+0170  3b 4e 6f 3b 56 65 72 73 69 6f 6e 3b 31 32 2e 30   ;No;Version;12.0
+0180  2e 32 30 30 30 2e 38 3b 3b 53 65 72 76 65 72 4e   .2000.8;;ServerN
+0190  61 6d 65 3b 57 49 4e 2d 53 32 32 4e 47 30 30 30   ame;WIN-S22NG000
+01a0  51 47 37 3b 49 6e 73 74 61 6e 63 65 4e 61 6d 65   QG7;InstanceName
+01b0  3b 4d 53 53 51 4c 53 45
+... [TRUNCATED] ...
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 471, "count": 818}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 471
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=45255 sample=3 udp.length=471
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 471
+PAYLOAD_STATS: {"payload_bytes": 403, "printable_ratio": 0.98, "alnum_ratio": 0.836, "entropy": 4.862, "top_ascii_snippets": ["ServerName;H2756138;InstanceName;DISPONIC01;IsClustered;No;Version;11.0.7001.0;tcp; 41856;;ServerName;H2756138;InstanceName;DISPONIC02;IsClustered;N o;Version;11.0.7 001.0;tcp;41151;;ServerName;H2756138;InstanceName;DISPONIC03;IsClustered;No;Version;11.0.7001.0; tcp;52234;;ServerName;H2756138;InstanceName;DISPONICINTERN01;IsClustered;No;Version;11.0.7001.0; tcp;50400;;ServerName;H2756138;InstanceN"]}
+ASCII_EXCERPT: ServerName;H2756138;InstanceName;DISPONIC01;IsClustered;No;Version;11.0.7001.0;tcp; 41856;;ServerName;H2756138;InstanceName;DISPONIC02;IsClustered;N o;Version;11.0.7 001.0;tcp;41151;;ServerName;H2756138;InstanceName;DISP...
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  01 eb 25 58 00 00 73 11 6a 8e ac 10 00 05 0a 00   ..%X..s.j.......
+0020  00 07 28 6b ad 16 01 d7 fb 73 05 cc 01 53 65 72   ..(k.....s...Ser
+0030  76 65 72 4e 61 6d 65 3b 48 32 37 35 36 31 33 38   verName;H2756138
+0040  3b 49 6e 73 74 61 6e 63 65 4e 61 6d 65 3b 44 49   ;InstanceName;DI
+0050  53 50 4f 4e 49 43 30 31 3b 49 73 43 6c 75 73 74   SPONIC01;IsClust
+0060  65 72 65 64 3b 4e 6f 3b 56 65 72 73 69 6f 6e 3b   ered;No;Version;
+0070  31 31 2e 30 2e 37 30 30 31 2e 30 3b 74 63 70 3b   11.0.7001.0;tcp;
+0080  34 31 38 35 36 3b 3b 53 65 72 76 65 72 4e 61 6d   41856;;ServerNam
+0090  65 3b 48 32 37 35 36 31 33 38 3b 49 6e 73 74 61   e;H2756138;Insta
+00a0  6e 63 65 4e 61 6d 65 3b 44 49 53 50 4f 4e 49 43   nceName;DISPONIC
+00b0  30 32 3b 49 73 43 6c 75 73 74 65 72 65 64 3b 4e   02;IsClustered;N
+00c0  6f 3b 56 65 72 73 69 6f 6e 3b 31 31 2e 30 2e 37   o;Version;11.0.7
+00d0  30 30 31 2e 30 3b 74 63 70 3b 34 31 31 35 31 3b   001.0;tcp;41151;
+00e0  3b 53 65 72 76 65 72 4e 61 6d 65 3b 48 32 37 35   ;ServerName;H275
+00f0  36 31 33 38 3b 49 6e 73 74 61 6e 63 65 4e 61 6d   6138;InstanceNam
+0100  65 3b 44 49 53 50 4f 4e 49 43 30 33 3b 49 73 43   e;DISPONIC03;IsC
+0110  6c 75 73 74 65 72 65 64 3b 4e 6f 3b 56 65 72 73   lustered;No;Vers
+0120  69 6f 6e 3b 31 31 2e 30 2e 37 30 30 31 2e 30 3b   ion;11.0.7001.0;
+0130  74 63 70 3b 35 32 32 33 34 3b 3b 53 65 72 76 65   tcp;52234;;Serve
+0140  72 4e 61 6d 65 3b 48 32 37 35 36 31 33 38 3b 49   rName;H2756138;I
+0150  6e 73 74 61 6e 63 65 4e 61 6d 65 3b 44 49 53 50   nstanceName;DISP
+0160  4f 4e 49 43 49 4e 54 45 52 4e 30 31 3b 49 73 43   ONICINTERN01;IsC
+0170  6c 75 73 74 65 72 65 64 3b 4e 6f 3b 56 65 72 73   lustered;No;Vers
+0180  69 6f 6e 3b 31 31 2e 30 2e 37 30 30 31 2e 30 3b   ion;11.0.7001.0;
+0190  74 63 70 3b 35 30 34 30 30 3b 3b 53 65 72 76 65   tcp;50400;;Serve
+01a0  72 4e 61 6d 65 3b 48 32 37 35 36 31 33 38 3b 49   rName;H2756138;I
+01b0  6e 73 74 61 6e 63 65 4e
+... [TRUNCATED] ...
+
+[PRIMARY_SCAN]
+[{"sample": 1, "udp_length": 465, "anchors": ["MSSQLSERVER2012", "InstanceName", "IsClustered", "MSSQLSERVER", "TUSQ909I0K3", "ServerName", "1433"]}, {"sample": 2, "udp_length": 463, "anchors": ["MSSQLSERVER2012", "InstanceName", "IsClustered", "MSSQLSERVER", "S22NG000QG7", "ServerName", "49999", "MSSQL", "6020"]}, {"sample": 3, "udp_length": 471, "anchors": ["InstanceName", "IsClustered", "DISPONIC01", "DISPONIC02", "ServerName", "H2756138", "41151", "41856", "7001", "DISP"]}]
+
+[PRIMARY_ANCHORS]
+["MSSQLSERVER2012", "InstanceName", "IsClustered", "MSSQLSERVER", "S22NG000QG7", "TUSQ909I0K3", "DISPONIC01", "DISPONIC02", "ServerName", "H2756138", "41151", "41856", "49999", "MSSQL", "1433", "6020", "7001", "DISP"]
+
+=== LLM RAW OUTPUT #1 ===
+<think>
+Alright, I need to analyze this Evidence Pack to determine the type of DDoS attack. Let's start by understanding the structure.
+
+First, the SFLOW_TRIAGE shows that UDP is dominant with a dominance score of 0.924. The victim is guessed to be 10.0.0.7. So, the dominant L4 is UDP.
+
+Looking at the UDP samples, the payloads have a high printable ratio and clear ASCII excerpts. For example, the first UDP_SAMPLE shows "ServerName;WIN-TUSQ909I0K3;InstanceName;MSSQLSERVER..." which looks like key-value pairs separated by semicolons. This structure suggests a "kv_semicolon_list" payload style.
+
+The presence of terms like "ServerName", "InstanceName", and "MSSQLSERVER" indicates this is related to MSSQL. The payload structure matches what's expected in a reflection attack, where attackers send requests that the server responds to, amplifying the traffic.
+
+Since the payload isn't random noise and clearly shows a structured response, the attack family is Reflection/Amplification. Specifically, the evidence points to MSSQL Reflection because of the server and instance details in the payload.
+
+The attack type is identified as "MSSQL Reflection" due to the specific keywords and structure. The hypothesis is supported by the consistent patterns across multiple samples, making the confidence high.
+
+In conclusion, this is a UDP-based MSSQL Reflection attack.
+</think>
+
+```json
+{
+  "verdict": "Malicious",
+  "attack_family": "Reflection/Amplification",
+  "attack_type": "MSSQL Reflection",
+  "analysis_trace": {
+    "dominant_l4_used": "UDP",
+    "victim_guess_used": "10.0.0.7",
+    "primary_samples_checked": 3,
+    "payload_style": "kv_semicolon_list",
+    "hypotheses": [
+      {
+        "name": "MSSQL Reflection",
+        "evidence_for": [
+          "Key-value pairs like `ServerName;WIN-TUSQ909I0K3;InstanceName;MSSQLSERVER` in ASCII_EXCERPT",
+          "`MSSQLSERVER2012` and `InstanceName` in PRIMARY_ANCHORS"
+        ],
+        "evidence_against": [
+          "No evidence of other reflection protocols like DNS or NTP"
+        ],
+        "score": 0.95
+      },
+      {
+        "name": "Unknown",
+        "evidence_for": [
+          "Multiple different `InstanceName` values across samples"
+        ],
+        "evidence_against": [
+          "Consistent key-value structure across all samples"
+        ],
+        "score": 0.05
+      }
+    ],
+    "decision": "The payload structure with `ServerName;`, `InstanceName;`, and `MSSQLSERVER` strongly indicates a MSSQL Reflection attack."
+  },
+  "key_evidence": [
+    "`ServerName;WIN-TUSQ909I0K3;InstanceName;MSSQLSERVER` in ASCII_EXCERPT",
+    "`MSSQLSERVER2012` in PRIMARY_ANCHORS",
+    "`tcp;1433;` in HEX_DUMP"
+  ],
+  "reasoning": "The key-value pairs and specific MSSQL identifiers in the payload confirm a MSSQL Reflection attack.",
+  "recommended_actions": [
+    "Block traffic from the identified source IPs",
+    "Implement specific MSSQL reflection filters",
+    "Verify and patch MSSQL services"
+  ],
+  "confidence": 0.95
+}
+```
+
+=== FINAL VERDICT ===
+Verdict: Malicious
+Attack Type: MSSQL Reflection
+Key Evidence:
+- `ServerName;WIN-TUSQ909I0K3;InstanceName;MSSQLSERVER` in ASCII_EXCERPT
+- `MSSQLSERVER2012` in PRIMARY_ANCHORS
+- `tcp;1433;` in HEX_DUMP
+Reasoning: The key-value pairs and specific MSSQL identifiers in the payload confirm a MSSQL Reflection attack.
+====================================================================================================
+
+####################################################################################################
+[INCIDENT]: 2026-01-29 17:32:36
+####################################################################################################
+=== COUNTER ALERT ===
+Anomaly at T=745.0s | Count=2
+
+=== TRIAGE (SFLOW) ===
+{
+  "victim_guess": "10.0.0.7",
+  "dominant_l4": "UDP",
+  "dominance_score": 0.984,
+  "proto_counts": {
+    "UDP": 1198,
+    "TCP": 18,
+    "ICMP": 1
+  },
+  "tcp_flags_stats": {
+    "source_column": "tcp_flags",
+    "total_tcp_samples": 18,
+    "syn_ratio": 0.056,
+    "ack_ratio": 0.889,
+    "rst_ratio": 0.056,
+    "fin_ratio": 0.056,
+    "psh_ratio": 0.333
+  },
+  "rows": 1217
+}
+
+=== EVIDENCE (STRUCTURED) ===
+[PCAP_SELECTED]
+/home/haodong_chen/pangu/log/timestep_pcap/744s-760s.pcap
+
+[SFLOW_TRIAGE]
+{"victim_guess": "10.0.0.7", "dominant_l4": "UDP", "dominance_score": 0.984, "proto_counts": {"UDP": 1198, "TCP": 18, "ICMP": 1}, "tcp_flags_stats": {"source_column": "tcp_flags", "total_tcp_samples": 18, "syn_ratio": 0.056, "ack_ratio": 0.889, "rst_ratio": 0.056, "fin_ratio": 0.056, "psh_ratio": 0.333}, "rows": 1217}
+
+IMPORTANT: CICDDoS2019 may randomize ports; do NOT rely on port numbers for protocol identification.
+
+
+==================== UDP EVIDENCE ====================
+
+[UDP_MACRO_STATS]
+{"rows": 49811, "unique_src": 26, "top_src": "172.16.0.5", "top_src_share": 0.999, "udp_len_p50": 383.0, "udp_len_p90": 409.0, "udp_len_mean": 375.72}
+
+[UDP_TOP_SRC_IPS] (ingress to victim if known)
+[["172.16.0.5", 49765], ["192.168.137.58", 9], ["192.168.137.1", 6], ["192.168.137.172", 5], ["192.168.137.41", 4]]
+
+[PRIMARY_UDP_LEN_CANDIDATES]
+[[338, 13477], [329, 4567], [383, 4500]]
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 338, "count": 13477}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 338
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=49765 sample=1 udp.length=338
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 338
+PAYLOAD_STATS: {"payload_bytes": 334, "printable_ratio": 0.937, "alnum_ratio": 0.731, "entropy": 5.471, "top_ascii_snippets": ["HTTP/1.1 200 OK  CACHE-CONTROL: max-age=1800  DATE: Sat, 01 Dec 2018 1 6:27:33 GMT  EXT'3:  LOCATION: http://192.168.0.1:52869/gatedesc.xml  SERVER: Linux/2.6.30.9, UPnP0/1.0, Portable SDK for UPnP devices/1.6.6  X-User-Agent: redsonic  ST: uuid:20809696-305a-3721-e8b8-78c1a7327a4e  USN: uuid:20809696-305a-3721-e8b8-78c1a7327a4e"]}
+ASCII_EXCERPT: HTTP/1.1 200 OK CACHE-CONTROL: max-age=1800 DATE: Sat, 01 Dec 2018 1 6:27:33 GMT EXT'3: LOCATION: http://192.168.0.1:52869/gatedesc.xml SERVER: Linux/2.6.30.9, UPnP0/1.0, Portable SDK for UPnP devices/1.6.6 X-User-Agent:...
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 70   .4............Ep
+0010  01 66 00 00 40 00 32 11 90 fb ac 10 00 05 0a 00   .f..@.2.........
+0020  00 07 8e 19 3c 53 01 52 3e af 48 54 54 50 2f 31   ....<S.R>.HTTP/1
+0030  2e 31 20 32 30 30 20 4f 4b 0d 0a 43 41 43 48 45   .1 200 OK..CACHE
+0040  2d 43 4f 4e 54 52 4f 4c 3a 20 6d 61 78 2d 61 67   -CONTROL: max-ag
+0050  65 3d 31 38 30 30 0d 0a 44 41 54 45 3a 20 53 61   e=1800..DATE: Sa
+0060  74 2c 20 30 31 20 44 65 63 20 32 30 31 38 20 31   t, 01 Dec 2018 1
+0070  36 3a 32 37 3a 33 33 20 47 4d 54 0d 0a 45 58 54   6:27:33 GMT..EXT
+0080  3a 0d 0a 4c 4f 43 41 54 49 4f 4e 3a 20 68 74 74   :..LOCATION: htt
+0090  70 3a 2f 2f 31 39 32 2e 31 36 38 2e 30 2e 31 3a   p://192.168.0.1:
+00a0  35 32 38 36 39 2f 67 61 74 65 64 65 73 63 2e 78   52869/gatedesc.x
+00b0  6d 6c 0d 0a 53 45 52 56 45 52 3a 20 4c 69 6e 75   ml..SERVER: Linu
+00c0  78 2f 32 2e 36 2e 33 30 2e 39 2c 20 55 50 6e 50   x/2.6.30.9, UPnP
+00d0  2f 31 2e 30 2c 20 50 6f 72 74 61 62 6c 65 20 53   /1.0, Portable S
+00e0  44 4b 20 66 6f 72 20 55 50 6e 50 20 64 65 76 69   DK for UPnP devi
+00f0  63 65 73 2f 31 2e 36 2e 36 0d 0a 58 2d 55 73 65   ces/1.6.6..X-Use
+0100  72 2d 41 67 65 6e 74 3a 20 72 65 64 73 6f 6e 69   r-Agent: redsoni
+0110  63 0d 0a 53 54 3a 20 75 75 69 64 3a 32 30 38 30   c..ST: uuid:2080
+0120  39 36 39 36 2d 33 30 35 61 2d 33 37 32 31 2d 65   9696-305a-3721-e
+0130  38 62 38 2d 37 38 63 31 61 37 33 32 37 61 34 65   8b8-78c1a7327a4e
+0140  0d 0a 55 53 4e 3a 20 75 75 69 64 3a 32 30 38 30   ..USN: uuid:2080
+0150  39 36 39 36 2d 33 30 35 61 2d 33 37 32 31 2d 65   9696-305a-3721-e
+0160  38 62 38 2d 37 38 63 31 61 37 33 32 37 61 34 65   8b8-78c1a7327a4e
+0170  0d 0a 0d 0a                                       ....
+
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 329, "count": 4567}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 329
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=49765 sample=2 udp.length=329
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 329
+PAYLOAD_STATS: {"payload_bytes": 325, "printable_ratio": 0.935, "alnum_ratio": 0.726, "entropy": 5.521, "top_ascii_snippets": ["HTTP/1.1 200 OK  CACHE-CONTROL: max-age=1800  DATE: Sat, 01 Dec 2018 1 6:27:33 GMT  EXT'3:  LOCATION: http://192.168.0.1:52869/gatedesc.xml  SERVER: Linux/2.6.30.9, UPnP0/1.0, Portable SDK for UPnP devices/1.6.6  X-User-Agent: redsonic  ST: upnp:rootdevice  USN: uuid:20809696-105a-3721-e8b8-54be5387de6a::upnp:rootdevice"]}
+ASCII_EXCERPT: HTTP/1.1 200 OK CACHE-CONTROL: max-age=1800 DATE: Sat, 01 Dec 2018 1 6:27:33 GMT EXT'3: LOCATION: http://192.168.0.1:52869/gatedesc.xml SERVER: Linux/2.6.30.9, UPnP0/1.0, Portable SDK for UPnP devices/1.6.6 X-User-Agent:...
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 70   .4............Ep
+0010  01 5d 00 00 40 00 32 11 91 04 ac 10 00 05 0a 00   .]..@.2.........
+0020  00 07 96 07 80 a0 01 49 95 51 48 54 54 50 2f 31   .......I.QHTTP/1
+0030  2e 31 20 32 30 30 20 4f 4b 0d 0a 43 41 43 48 45   .1 200 OK..CACHE
+0040  2d 43 4f 4e 54 52 4f 4c 3a 20 6d 61 78 2d 61 67   -CONTROL: max-ag
+0050  65 3d 31 38 30 30 0d 0a 44 41 54 45 3a 20 53 61   e=1800..DATE: Sa
+0060  74 2c 20 30 31 20 44 65 63 20 32 30 31 38 20 31   t, 01 Dec 2018 1
+0070  36 3a 32 37 3a 33 33 20 47 4d 54 0d 0a 45 58 54   6:27:33 GMT..EXT
+0080  3a 0d 0a 4c 4f 43 41 54 49 4f 4e 3a 20 68 74 74   :..LOCATION: htt
+0090  70 3a 2f 2f 31 39 32 2e 31 36 38 2e 30 2e 31 3a   p://192.168.0.1:
+00a0  35 32 38 36 39 2f 67 61 74 65 64 65 73 63 2e 78   52869/gatedesc.x
+00b0  6d 6c 0d 0a 53 45 52 56 45 52 3a 20 4c 69 6e 75   ml..SERVER: Linu
+00c0  78 2f 32 2e 36 2e 33 30 2e 39 2c 20 55 50 6e 50   x/2.6.30.9, UPnP
+00d0  2f 31 2e 30 2c 20 50 6f 72 74 61 62 6c 65 20 53   /1.0, Portable S
+00e0  44 4b 20 66 6f 72 20 55 50 6e 50 20 64 65 76 69   DK for UPnP devi
+00f0  63 65 73 2f 31 2e 36 2e 36 0d 0a 58 2d 55 73 65   ces/1.6.6..X-Use
+0100  72 2d 41 67 65 6e 74 3a 20 72 65 64 73 6f 6e 69   r-Agent: redsoni
+0110  63 0d 0a 53 54 3a 20 75 70 6e 70 3a 72 6f 6f 74   c..ST: upnp:root
+0120  64 65 76 69 63 65 0d 0a 55 53 4e 3a 20 75 75 69   device..USN: uui
+0130  64 3a 32 30 38 30 39 36 39 36 2d 31 30 35 61 2d   d:20809696-105a-
+0140  33 37 32 31 2d 65 38 62 38 2d 35 34 62 65 35 33   3721-e8b8-54be53
+0150  38 37 64 65 36 61 3a 3a 75 70 6e 70 3a 72 6f 6f   87de6a::upnp:roo
+0160  74 64 65 76 69 63 65 0d 0a 0d 0a                  tdevice....
+
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 383, "count": 4500}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 383
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=49765 sample=3 udp.length=383
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 383
+PAYLOAD_STATS: {"payload_bytes": 379, "printable_ratio": 0.945, "alnum_ratio": 0.739, "entropy": 5.484, "top_ascii_snippets": ["HTTP/1.1 200 OK  CACHE-CONTROL: max-age=1800  DATE: Sat, 01 Dec 2018 1 6:27:32 GMT  EXT'2:  LOCATION: http://192.168.0.1:52869/gatedesc.xml  SERVER: Linux/2.6.30.9, UPnP0/1.0, Portable SDK for UPnP devices/1.6.6  X-User-Agent: redsonic  ST: urn:schemas-microsoft-com:service:OSInfo:1  USN: uuid:20809696-105a-3721-e8b8-28ff3e36b0fe::urn:schemas-microsoft-com:service:OSInfo:1"]}
+ASCII_EXCERPT: HTTP/1.1 200 OK CACHE-CONTROL: max-age=1800 DATE: Sat, 01 Dec 2018 1 6:27:32 GMT EXT'2: LOCATION: http://192.168.0.1:52869/gatedesc.xml SERVER: Linux/2.6.30.9, UPnP0/1.0, Portable SDK for UPnP devices/1.6.6 X-User-Agent:...
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 70   .4............Ep
+0010  01 93 00 00 40 00 32 11 90 ce ac 10 00 05 0a 00   ....@.2.........
+0020  00 07 b7 dc 2e 07 01 7f ce 03 48 54 54 50 2f 31   ..........HTTP/1
+0030  2e 31 20 32 30 30 20 4f 4b 0d 0a 43 41 43 48 45   .1 200 OK..CACHE
+0040  2d 43 4f 4e 54 52 4f 4c 3a 20 6d 61 78 2d 61 67   -CONTROL: max-ag
+0050  65 3d 31 38 30 30 0d 0a 44 41 54 45 3a 20 53 61   e=1800..DATE: Sa
+0060  74 2c 20 30 31 20 44 65 63 20 32 30 31 38 20 31   t, 01 Dec 2018 1
+0070  36 3a 32 37 3a 33 32 20 47 4d 54 0d 0a 45 58 54   6:27:32 GMT..EXT
+0080  3a 0d 0a 4c 4f 43 41 54 49 4f 4e 3a 20 68 74 74   :..LOCATION: htt
+0090  70 3a 2f 2f 31 39 32 2e 31 36 38 2e 30 2e 31 3a   p://192.168.0.1:
+00a0  35 32 38 36 39 2f 67 61 74 65 64 65 73 63 2e 78   52869/gatedesc.x
+00b0  6d 6c 0d 0a 53 45 52 56 45 52 3a 20 4c 69 6e 75   ml..SERVER: Linu
+00c0  78 2f 32 2e 36 2e 33 30 2e 39 2c 20 55 50 6e 50   x/2.6.30.9, UPnP
+00d0  2f 31 2e 30 2c 20 50 6f 72 74 61 62 6c 65 20 53   /1.0, Portable S
+00e0  44 4b 20 66 6f 72 20 55 50 6e 50 20 64 65 76 69   DK for UPnP devi
+00f0  63 65 73 2f 31 2e 36 2e 36 0d 0a 58 2d 55 73 65   ces/1.6.6..X-Use
+0100  72 2d 41 67 65 6e 74 3a 20 72 65 64 73 6f 6e 69   r-Agent: redsoni
+0110  63 0d 0a 53 54 3a 20 75 72 6e 3a 73 63 68 65 6d   c..ST: urn:schem
+0120  61 73 2d 6d 69 63 72 6f 73 6f 66 74 2d 63 6f 6d   as-microsoft-com
+0130  3a 73 65 72 76 69 63 65 3a 4f 53 49 6e 66 6f 3a   :service:OSInfo:
+0140  31 0d 0a 55 53 4e 3a 20 75 75 69 64 3a 32 30 38   1..USN: uuid:208
+0150  30 39 36 39 36 2d 31 30 35 61 2d 33 37 32 31 2d   09696-105a-3721-
+0160  65 38 62 38 2d 32 38 66 66 33 65 33 36 62 30 66   e8b8-28ff3e36b0f
+0170  65 3a 3a 75 72 6e 3a 73 63 68 65 6d 61 73 2d 6d   e::urn:schemas-m
+0180  69 63 72 6f 73 6f 66 74 2d 63 6f 6d 3a 73 65 72   icrosoft-com:ser
+0190  76 69 63 65 3a 4f 53 49 6e 66 6f 3a 31 0d 0a 0d   vice:OSInfo:1...
+01a0  0a                                                .
+
+
+[PRIMARY_SCAN]
+[{"sample": 1, "udp_length": 338, "anchors": ["gatedesc.xml", "LOCATION:", "HTTP/1.1", "LOCATION", "Portable", "gatedesc", "CONTROL", "SERVER:", "SERVER", "52869", "CACHE", "1800"]}, {"sample": 2, "udp_length": 329, "anchors": ["gatedesc.xml", "LOCATION:", "HTTP/1.1", "LOCATION", "Portable", "gatedesc", "CONTROL", "SERVER:", "SERVER", "52869", "CACHE", "1800"]}, {"sample": 3, "udp_length": 383, "anchors": ["gatedesc.xml", "LOCATION:", "HTTP/1.1", "LOCATION", "Portable", "gatedesc", "CONTROL", "SERVER:", "SERVER", "52869", "CACHE", "1800"]}]
+
+[PRIMARY_ANCHORS]
+["gatedesc.xml", "LOCATION:", "HTTP/1.1", "LOCATION", "Portable", "gatedesc", "CONTROL", "SERVER:", "SERVER", "52869", "CACHE", "1800"]
+
+=== LLM RAW OUTPUT #1 ===
+<think>
+Okay, so I'm trying to figure out what kind of DDoS attack we're dealing with here. Let's start by looking at the evidence pack provided. The first thing I notice is that the traffic is mostly UDP, with 1198 UDP packets compared to only 18 TCP packets. That suggests that the attack is likely UDP-based.
+
+Looking at the UDP samples, each has a payload that looks like HTTP responses. The ASCII excerpts show "HTTP/1.1 200 OK", "CACHE-CONTROL", "DATE", "LOCATION", and "SERVER" headers. This structure is very HTTP-like, so the payload_style is definitely "http_like". 
+
+The HEX dumps also support this, showing the same HTTP headers in their byte form. The presence of "LOCATION: http://192.168.0.1:52869/gatedesc.xml" and "SERVER: Linux/2.6.30.9, UPnP0/1.0" indicates that this is related to UPnP devices. 
+
+So, putting this together, the payload structure is HTTP-like, and the content points to UPnP services. This makes me think it's an SSDP reflection attack because SSDP (Simple Service Discovery Protocol) is used by UPnP devices and often involves reflecting HTTP-like responses.
+
+Now, considering the attack family, since the dominant L4 is UDP and the payload isn't random noise, it's likely a reflection/amplification attack. The high number of UDP packets from a single source also supports this.
+
+For the attack type, since the payload is HTTP-like and contains UPnP-related headers, SSDP Reflection is the most fitting. The alternative could be another reflection type, but the evidence strongly points to SSDP. The Unknown option is there as a fallback, but the evidence is clear enough to assign SSDP Reflection with high confidence.
+
+The key evidence includes the HTTP headers and the UPnP-specific strings found in the payloads. The reasoning ties the structure to SSDP, and the recommended actions include mitigating UDP traffic and possibly blocking specific sources.
+
+So, after analyzing all the data, the verdict is Malicious, attack family is Reflection/Amplification, and the attack type is SSDP Reflection.
+</think>
+
+```json
+{
+  "verdict": "Malicious",
+  "attack_family": "Reflection/Amplification",
+  "attack_type": "SSDP Reflection",
+  "analysis_trace": {
+    "dominant_l4_used": "UDP",
+    "victim_guess_used": "10.0.0.7",
+    "primary_samples_checked": 3,
+    "payload_style": "http_like",
+    "hypotheses": [
+      {
+        "name": "SSDP Reflection",
+        "evidence_for": [
+          "Visible HTTP/1.1 200 OK headers in the payload",
+          "Presence of LOCATION: http://192.168.0.1:52869/gatedesc.xml",
+          "SERVER: Linux/2.6.30.9, UPnP0/1.0, Portable SDK for UPnP devices/1.6.6"
+        ],
+        "evidence_against": [
+          "No evidence of DNS, NetBIOS, or other reflection protocols"
+        ],
+        "score": 0.95
+      },
+      {
+        "name": "Unknown",
+        "evidence_for": [
+          "No clear indication of other known reflection protocols"
+        ],
+        "evidence_against": [
+          "Strong evidence of HTTP-like structure and UPnP elements"
+        ],
+        "score": 0.05
+      }
+    ],
+    "decision": "The payload contains HTTP/1.1 200 OK responses, LOCATION headers pointing to UPnP endpoints, and specific server identifiers for UPnP devices, indicating an SSDP Reflection attack."
+  },
+  "key_evidence": [
+    "HTTP/1.1 200 OK",
+    "LOCATION: http://192.168.0.1:52869/gatedesc.xml",
+    "SERVER: Linux/2.6.30.9, UPnP0/1.0, Portable SDK for UPnP devices/1.6.6"
+  ],
+  "reasoning": "The evidence shows HTTP-like responses with UPnP-specific content, indicating a reflection attack targeting SSDP services.",
+  "recommended_actions": [
+    "Block UDP traffic from sources identified in the top UDP sources",
+    "Implement rate limiting for UDP traffic",
+    "Filter traffic targeting UPnP services",
+    "Verify and update UPnP devices on the network"
+  ],
+  "confidence": 0.95
+}
+```
+
+=== FINAL VERDICT ===
+Verdict: Malicious
+Attack Type: SSDP Reflection
+Key Evidence:
+- HTTP/1.1 200 OK
+- LOCATION: http://192.168.0.1:52869/gatedesc.xml
+- SERVER: Linux/2.6.30.9, UPnP0/1.0, Portable SDK for UPnP devices/1.6.6
+Reasoning: The evidence shows HTTP-like responses with UPnP-specific content, indicating a reflection attack targeting SSDP services.
+====================================================================================================
+
+####################################################################################################
+[INCIDENT]: 2026-01-29 17:33:46
+####################################################################################################
+=== COUNTER ALERT ===
+Anomaly at T=793.0s | Count=2
+
+=== TRIAGE (SFLOW) ===
+{
+  "victim_guess": "10.0.0.7",
+  "dominant_l4": "UDP",
+  "dominance_score": 0.975,
+  "proto_counts": {
+    "UDP": 899,
+    "TCP": 23
+  },
+  "tcp_flags_stats": {
+    "source_column": "tcp_flags",
+    "total_tcp_samples": 23,
+    "syn_ratio": 0.0,
+    "ack_ratio": 1.0,
+    "rst_ratio": 0.0,
+    "fin_ratio": 0.0,
+    "psh_ratio": 0.217
+  },
+  "rows": 922
+}
+
+=== EVIDENCE (STRUCTURED) ===
+[PCAP_SELECTED]
+/home/haodong_chen/pangu/log/timestep_pcap/792s-807s.pcap
+
+[SFLOW_TRIAGE]
+{"victim_guess": "10.0.0.7", "dominant_l4": "UDP", "dominance_score": 0.975, "proto_counts": {"UDP": 899, "TCP": 23}, "tcp_flags_stats": {"source_column": "tcp_flags", "total_tcp_samples": 23, "syn_ratio": 0.0, "ack_ratio": 1.0, "rst_ratio": 0.0, "fin_ratio": 0.0, "psh_ratio": 0.217}, "rows": 922}
+
+IMPORTANT: CICDDoS2019 may randomize ports; do NOT rely on port numbers for protocol identification.
+
+
+==================== UDP EVIDENCE ====================
+
+[UDP_MACRO_STATS]
+{"rows": 49637, "unique_src": 33, "top_src": "172.16.0.5", "top_src_share": 0.999, "udp_len_p50": 448.0, "udp_len_p90": 448.0, "udp_len_mean": 445.64}
+
+[UDP_TOP_SRC_IPS] (ingress to victim if known)
+[["172.16.0.5", 49580], ["192.168.137.1", 8], ["192.168.137.41", 6], ["192.168.137.172", 5], ["192.168.137.187", 5]]
+
+[PRIMARY_UDP_LEN_CANDIDATES]
+[[448, 49149], [88, 96], [232, 90]]
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 448, "count": 49149}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 448
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=49580 sample=1 udp.length=448
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 448
+PAYLOAD_STATS: {"payload_bytes": 400, "printable_ratio": 0.1, "alnum_ratio": 0.075, "entropy": 4.049, "top_ascii_snippets": ["*   H               = CB   D      s                                                          M      D      q           wo   D                u                       w^     D               D                               D                 [     D      U      7H    U              i    D      T                   CA=  D                           #>   D                                < o /  D     &"]}
+ASCII_EXCERPT: * H = CB D s M D q wo D u w^ D D D [ D U 7H U i D T CA= D #> D < o / D &
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 c0   .4............E.
+0010  01 d4 04 ff 40 00 35 11 88 3e ac 10 00 05 0a 00   ....@.5..>......
+0020  00 07 02 7a ff ae 01 c0 f6 8b d7 14 03 2a 00 06   ...z.........*..
+0030  00 48 00 00 00 aa 00 00 00 94 00 00 01 90 00 00   .H..............
+0040  06 3d d9 43 42 90 b2 d1 44 07 00 00 00 01 c9 73   .=.CB...D......s
+0050  03 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+0060  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+0070  00 00 00 00 00 00 00 00 00 00 00 00 00 c8 00 00   ................
+0080  00 98 00 00 01 90 00 00 05 4d c2 bb 1c 0e b2 d1   .........M......
+0090  44 07 00 00 00 01 a3 71 03 04 00 00 00 00 00 00   D......q........
+00a0  00 04 b0 77 6f 03 b2 d1 44 07 00 00 00 01 ab 08   ...wo...D.......
+00b0  03 04 00 00 f8 dd 00 03 e3 75 00 00 01 90 00 00   .........u......
+00c0  00 04 00 00 00 a4 00 00 00 98 00 00 01 90 00 00   ................
+00d0  06 77 5e e7 b7 12 b2 d1 44 07 00 00 00 01 ce 17   .w^.....D.......
+00e0  03 04 00 00 00 00 b2 d1 44 07 00 00 00 01 a7 85   ........D.......
+00f0  03 04 00 00 02 b4 00 03 f1 c2 00 00 01 90 00 00   ................
+0100  01 89 d4 eb 0a b5 b2 d1 44 07 00 00 01 12 00 00   ........D.......
+0110  00 99 00 00 01 90 00 00 03 e1 5b cb 89 f6 b2 d1   ..........[.....
+0120  44 07 00 00 00 01 e2 55 03 04 00 00 00 00 37 48   D......U......7H
+0130  03 04 00 00 55 dc 00 04 06 13 00 00 01 90 00 00   ....U...........
+0140  00 0c 05 69 de 1c b2 d1 44 07 00 00 00 01 e6 54   ...i....D......T
+0150  03 04 00 00 00 9c 00 00 00 9a 00 00 01 90 00 00   ................
+0160  06 cc d9 43 41 3d b2 d1 44 07 00 00 00 01 c0 f2   ...CA=..D.......
+0170  03 04 00 00 00 00 00 04 16 f6 00 00 01 90 00 00   ................
+0180  00 01 b9 23 3e dc b2 d1 44 07 00 00 00 01 ec fb   ...#>...D.......
+0190  03 04 00 00 0a d9 00 04 18 eb 00 00 00 93 00 00   ................
+01a0  00 9d 00 00 01 90 00 00 07 3c b0 6f f6 2f b2 d1   .........<.o./..
+01b0  44 07 00 00 00 01 26 a9
+... [TRUNCATED] ...
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 88, "count": 96}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 88
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=49580 sample=2 udp.length=88
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 88
+PAYLOAD_STATS: {"payload_bytes": 80, "printable_ratio": 0.062, "alnum_ratio": 0.037, "entropy": 2.288, "top_ascii_snippets": ["*   H                 4+V"]}
+ASCII_EXCERPT: * H 4+V
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 00   .4............E.
+0010  00 6c 00 00 40 00 2f 11 95 65 ac 10 00 05 0a 00   .l..@./..e......
+0020  00 07 02 7a b9 da 00 58 48 a2 97 01 03 2a 00 01   ...z...XH....*..
+0030  00 48 00 04 fa 1e 00 04 fa 1e 00 00 01 80 00 00   .H..............
+0040  00 01 c4 34 2b 56 c0 a8 01 f0 00 00 00 01 fe c6   ...4+V..........
+0050  03 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+0060  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+0070  00 00 00 00 00 00 00 00 00 00                     ..........
+
+
+[PRIMARY_UDP_LEN_MODE]
+{"udp.length": 232, "count": 90}
+
+[PRIMARY_REPRESENTATIVE_FILTER]
+udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 232
+
+
+[UDP_SAMPLE] rank=1 src_ip=172.16.0.5 src_count=49580 sample=3 udp.length=232
+FILTER: udp && ip && ip.src == 172.16.0.5 && ip.dst == 10.0.0.7 && udp.length == 232
+PAYLOAD_STATS: {"payload_bytes": 224, "printable_ratio": 0.098, "alnum_ratio": 0.08, "entropy": 3.722, "top_ascii_snippets": ["H *   H               b  b   D                                                    a           V  F   D                  wo   D                u          (   (            9  D     &M        D                               D"]}
+ASCII_EXCERPT: H * H b b D a V F D wo D u ( ( 9 D &M D D
+HEX_DUMP:
+0000  12 34 00 00 00 07 00 00 00 00 00 02 08 00 45 c0   .4............E.
+0010  00 fc 05 33 40 00 35 11 88 e2 ac 10 00 05 0a 00   ...3@.5.........
+0020  00 07 02 7a ff ae 00 e8 b1 4d 97 48 03 2a 00 03   ...z.....M.H.*..
+0030  00 48 00 00 0a dd 00 04 1a 1f 00 00 01 90 00 00   .H..............
+0040  00 62 bc f7 62 a3 b2 d1 44 07 00 00 00 01 ac c6   .b..b...D.......
+0050  03 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+0060  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+0070  00 00 00 00 00 00 00 00 00 00 00 00 0c 61 00 04   .............a..
+0080  1b bb 00 00 01 90 00 00 00 56 c3 a2 46 ee b2 d1   .........V..F...
+0090  44 07 00 00 00 01 c8 8a 03 04 00 00 00 00 00 00   D...............
+00a0  00 04 b0 77 6f 03 b2 d1 44 07 00 00 00 01 ab 08   ...wo...D.......
+00b0  03 04 00 00 f8 dd 00 03 e3 75 00 00 01 90 00 00   .........u......
+00c0  00 04 00 04 28 9d 00 04 28 9d 00 00 01 90 00 00   ....(...(.......
+00d0  00 01 c0 a2 d0 39 b2 d1 44 07 00 00 00 01 26 4d   .....9..D.....&M
+00e0  03 04 00 00 00 00 b2 d1 44 07 00 00 00 01 a7 85   ........D.......
+00f0  03 04 00 00 02 b4 00 03 f1 c2 00 00 01 90 00 00   ................
+0100  01 89 d4 eb 0a b5 b2 d1 44 07                     ........D.
+
+
+[PRIMARY_SCAN]
+[{"sample": 1, "udp_length": 448, "anchors": []}, {"sample": 2, "udp_length": 88, "anchors": []}, {"sample": 3, "udp_length": 232, "anchors": []}]
+
+=== LLM RAW OUTPUT #1 ===
+<think>
+Okay, I'm trying to figure out how to analyze this Evidence Pack to determine the correct JSON verdict. Let's go through this step by step.
+
+First, I need to understand the structure of the attack based on the payload. Looking at the Evidence Pack, I see multiple [UDP_SAMPLE] entries with different lengths: 448, 88, and 232. Each sample includes a payload_stats section and an ASCII excerpt.
+
+For the first sample with length 448, the ASCII excerpt is "* H = CB D s M D q wo D u w^ D D D [ D U 7H U i D T CA= D #> D < o / D &". This looks like random characters without a clear structure. The printable_ratio is 0.1, which is low, and the entropy is high at 4.049. This suggests it's not a structured protocol but more like random noise.
+
+The second sample has a length of 88 and the ASCII excerpt "* H 4+V". Again, this is very short and doesn't show any recognizable structure. The printable_ratio is 0.062, even lower, indicating it's not readable text.
+
+The third sample with length 232 has an ASCII excerpt "H * H b b D a V F D wo D u ( ( 9 D &M D D". This also seems like random characters without any clear pattern or recognizable fields. The printable_ratio is 0.098, still low.
+
+Since all the samples show low printable ratios and high entropy, the payload_style is likely "random_noise". There's no clear structure that resembles HTTP, ASN.1, or any other recognizable protocol.
+
+Next, looking at the L4 traffic, the SFLOW_TRIAGE shows dominant_l4 as UDP with a dominance score of 0.975. This means the attack is mostly using UDP. Given that the payload_style is "random_noise", according to the rules, if the dominant L4 is UDP and payload_style is random_noise, the attack_family should be "Direct Flood".
+
+For attack_type, since the dominant L4 is UDP and the payload is random_noise, I can't assign a specific reflection type. Therefore, the attack_type is "UDP Flood".
+
+The verdict is "Malicious" because it's a DDoS attack. The key evidence includes the payload_stats and ASCII excerpts showing low printable ratios and high entropy, which support the "random_noise" classification. The hypotheses consider possibilities like "Unknown" and other reflections, but the evidence supports "UDP Flood" as the primary hypothesis.
+
+The recommended actions are generic for a UDP flood, focusing on filtering and rate limiting.
+</think>
+
+```json
+{
+  "verdict": "Malicious",
+  "attack_family": "Direct Flood",
+  "attack_type": "UDP Flood",
+  "analysis_trace": {
+    "dominant_l4_used": "UDP",
+    "victim_guess_used": "10.0.0.7",
+    "primary_samples_checked": 3,
+    "payload_style": "random_noise",
+    "hypotheses": [
+      {
+        "name": "UDP Flood",
+        "evidence_for": [
+          "Payload shows low printable ratio (`printable_ratio`: 0.1) and high entropy (4.049)",
+          "ASCII excerpt contains random characters without recognizable structure"
+        ],
+        "evidence_against": [
+          "No clear protocol-specific patterns or anchors"
+        ],
+        "score": 0.9
+      },
+      {
+        "name": "Unknown",
+        "evidence_for": [
+          "Multiple UDP packet lengths (448, 88, 232) without clear pattern"
+        ],
+        "evidence_against": [
+          "Dominant UDP traffic with consistent source IP (172.16.0.5)"
+        ],
+        "score": 0.1
+      }
+    ],
+    "decision": "The payload structure is random_noise with no clear protocol identifiers, and dominant UDP traffic suggests a Direct Flood attack."
+  },
+  "key_evidence": [
+    "`printable_ratio`: 0.1",
+    "`entropy`: 4.049",
+    "ASCII excerpt: * H = CB D s M D q wo D u w^ D D D [ D U 7H U i D T CA= D #> D < o / D &"
+  ],
+  "reasoning": "The evidence shows UDP dominant traffic with random payload structure, indicating a UDP Flood attack.",
+  "recommended_actions": [
+    "Apply UDP filtering rules",
+    "Implement rate limiting on UDP traffic",
+    "Monitor for source IP 172.16.0.5"
+  ],
+  "confidence": 0.9
+}
+```
+
+=== FINAL VERDICT ===
+Verdict: Malicious
+Attack Type: UDP Flood
+Key Evidence:
+- `printable_ratio`: 0.1
+- `entropy`: 4.049
+- ASCII excerpt: * H = CB D s M D q wo D u w^ D D D [ D U 7H U i D T CA= D #> D < o / D &
+Reasoning: The evidence shows UDP dominant traffic with random payload structure, indicating a UDP Flood attack.
+====================================================================================================
