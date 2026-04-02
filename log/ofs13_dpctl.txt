@@ -1,0 +1,9 @@
+[0.100000s] InstallProactiveFlowsExact() start for spine
+[0.100000s] [spine] dpctl BROADCAST rc=0
+[0.100000s] InstallProactiveFlowsExact() end for spine
+[0.100000s] InstallProactiveFlowsExact() start for tor1
+[0.100000s] [tor1] dpctl BROADCAST rc=0
+[0.100000s] InstallProactiveFlowsExact() end for tor1
+[0.100000s] InstallProactiveFlowsExact() start for tor2
+[0.100000s] [tor2] dpctl BROADCAST rc=0
+[0.100000s] InstallProactiveFlowsExact() end for tor2
